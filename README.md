@@ -56,16 +56,33 @@ AI-Powered Expense Tracker is a MERN-stack application designed to help users tr
 
 ## Project Structure
 
-expense-tracker-ai/
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
+```text
+expense-tracker-ai
+│
+├── backend
+│   ├── config
+│   │   └── db.js
+│   │
+│   ├── controllers
+│   │   └── expenseController.js
+│   │
+│   ├── models
+│   │   └── Expense.js
+│   │
+│   ├── routes
+│   │   └── expenseRoutes.js
+│   │
+│   ├── .env
+│   ├── package.json
 │   └── server.js
 │
-├── frontend/
+├── frontend
+│   └── (React Frontend - Coming Soon)
+│
+├── .gitignore
 └── README.md
+```
+
 
 ## Project Status
 
