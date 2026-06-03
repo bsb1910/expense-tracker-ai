@@ -21,6 +21,15 @@ app.use(express.json());
 // Add this line here
 app.use("/api/expenses", expenseRoutes);
 
+// Health Check API
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    application: "SmartExpense Tracker",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get("/", (req, res) => {
   res.send("AI Expense Tracker Backend Running 🚀");
 });
