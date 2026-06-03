@@ -2,14 +2,27 @@
 
 ## Overview
 
-AI-Powered Expense Tracker is a MERN-stack application designed to help users track expenses, analyze spending habits, and receive AI-driven financial insights.
+AI-Powered Expense Tracker is a full-stack MERN application designed to help users manage expenses, track spending habits, visualize financial data, and receive AI-driven financial insights.
 
-## Features
+The project is being developed as part of an AI Engineering Internship (June 2026).
+
+---
+
+## Current Features
 
 ### Expense Management
 
 * Add Expense
 * View Expenses
+* Expense Categories
+* Dashboard Navigation
+* Analytics Page Structure
+* AI Assistant Page Structure
+
+### Backend APIs
+
+* Create Expense
+* Fetch Expenses
 * Update Expense
 * Delete Expense
 
@@ -17,24 +30,41 @@ AI-Powered Expense Tracker is a MERN-stack application designed to help users tr
 
 * MongoDB Atlas Integration
 * Cloud-based Expense Storage
+* Mongoose Models
 
-### Backend APIs
+### Frontend
 
-* POST /api/expenses
-* GET /api/expenses
-* PUT /api/expenses/:id
-* DELETE /api/expenses/:id
+* React + Vite Setup
+* Responsive Dashboard Layout
+* Expense Management Page
+* Categories Page
+* Analytics Page
+* AI Assistant Page
+* Axios API Integration
 
-### Upcoming Features
+---
 
-* Expense Analytics Dashboard
-* Category-wise Reports
-* Monthly Expense Summary
-* AI Smart Assistant
-* Savings Recommendations
-* Spending Pattern Analysis
+## API Endpoints
+
+### Expenses
+
+```http
+POST /api/expenses
+GET /api/expenses
+PUT /api/expenses/:id
+DELETE /api/expenses/:id
+```
+
+---
 
 ## Technology Stack
+
+### Frontend
+
+* React
+* Vite
+* Axios
+* React Router
 
 ### Backend
 
@@ -43,16 +73,12 @@ AI-Powered Expense Tracker is a MERN-stack application designed to help users tr
 * MongoDB Atlas
 * Mongoose
 
-### Frontend (Upcoming)
-
-* React
-* Vite
-* Axios
-
-### AI Integration (Upcoming)
+### AI Integration (Planned)
 
 * Google Gemini API
 * OpenAI API
+
+---
 
 ## Project Structure
 
@@ -77,26 +103,77 @@ expense-tracker-ai
 │   └── server.js
 │
 ├── frontend
-│   └── (React Frontend - Coming Soon)
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   └── utils
+│   │
+│   ├── package.json
+│   └── vite.config.js
 │
-├── .gitignore
-└── README.md
+├── README.md
+└── .gitignore
 ```
 
+---
 
 ## Project Status
 
+### Completed
+
 * Backend Setup ✅
-* MongoDB Integration ✅
+* MongoDB Atlas Integration ✅
 * CRUD APIs ✅
-* GitHub Repository ✅
-* Expense Analytics ⏳
-* React Frontend ⏳
-* AI Assistant ⏳
+* React Frontend Setup ✅
+* Dashboard Navigation ✅
+* Axios Integration ✅
+* GitHub Repository Setup ✅
+
+### In Progress
+
+* Expense Listing 🔄
+* Category Management 🔄
+* Expense Analytics 🔄
+
+### Planned
+
+* AI Financial Assistant ⏳
+* Spending Pattern Analysis ⏳
+* Savings Recommendations ⏳
+* Monthly Reports ⏳
+* Smart Insights using LLMs ⏳
+
+---
+
+## Future Roadmap
+
+### Phase 1
+
+* Complete Expense Management Module
+* Category Management
+* Expense Analytics Dashboard
+
+### Phase 2
+
+* Charts and Visualizations
+* Monthly Reports
+* Financial Summaries
+
+### Phase 3
+
+* AI Chat Assistant
+* Natural Language Expense Queries
+* Personalized Savings Suggestions
+* AI Financial Insights
+
+---
 
 ## Author
 
-Bhagyesh Bhatt
+**Bhagyesh Bhatt**
 
-AI Engineering Internship Project - June 2026
-
+B.Tech CSE Student
+AI Engineering Internship Project
+June 2026
