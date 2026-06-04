@@ -7,6 +7,7 @@ const cors = require("cors");
 const assistantRoutes = require("./routes/assistantRoutes");
 const connectDB = require("./config/db");
 const expenseRoutes = require("./routes/expenseRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // Add this line here
 app.use("/api/expenses", expenseRoutes);
+app.use("/api/ai", aiRoutes);
 
 console.log("assistantRoutes =", assistantRoutes);
 console.log("type =", typeof assistantRoutes);

@@ -44,6 +44,15 @@ export const expenseService = {
   },
 };
 
+export const assistantService = {
+  chat: async (message) => {
+    const response = await apiClient.post("/assistant/chat", {
+      message,
+    });
+
+    return response;
+  },
+};
 // ==========================================
 // CATEGORY SERVICE (Modular & LocalStorage for now)
 // ==========================================

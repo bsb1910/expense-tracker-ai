@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, Input, Button, Avatar, Space, Typography, Tag, message } from "antd";
+import { Card, Input, Button, Avatar, Space, Typography, Tag } from "antd";
 import { SendOutlined, RobotOutlined, UserOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { expenseService } from "../services/api";
-import { formatCurrency, formatDate } from "../utils/helpers";
+import {
+  expenseService,
+  assistantService,
+} from "../services/api";
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -50,99 +52,50 @@ const AIAssistant = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSend = (textToSend) => {
-    const text = textToSend || inputText;
-    if (!text.trim()) return;
+  const handleSend = async (textToSend) => {
+  const text = textToSend || inputText;
 
-    // Add user message
-    const userMsg = {
-      id: `user-${Date.now()}`,
-      sender: "user",
-      text: text.trim(),
+  if (!text.trim()) return;
+
+  const userMsg = {
+    id: `user-${Date.now()}`,
+    sender: "user",
+    text: text.trim(),
+    time: new Date(),
+  };
+
+  setMessages((prev) => [...prev, userMsg]);
+  setInputText("");
+  setTyping(true);
+
+  try {
+    const response = await assistantService.chat(text.trim());
+
+    const aiMsg = {
+      id: `ai-${Date.now()}`,
+      sender: "ai",
+      text: response.data.reply,
       time: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputText("");
-    setTyping(true);
+    setMessages((prev) => [...prev, aiMsg]);
+  } catch (error) {
+    console.error("AI Assistant Error:", error);
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const aiReply = generateMockResponse(text.trim());
-      const aiMsg = {
-        id: `ai-${Date.now()}`,
-        sender: "ai",
-        text: aiReply,
-        time: new Date(),
-      };
-      setMessages((prev) => [...prev, aiMsg]);
-      setTyping(false);
-    }, 1200);
-  };
+    const aiMsg = {
+      id: `ai-${Date.now()}`,
+      sender: "ai",
+      text: "Unable to contact AI assistant.",
+      time: new Date(),
+    };
 
-  /**
-   * Mock Analytical Engine: Reads current database state to reply
-   */
-  const generateMockResponse = (query) => {
-    const q = query.toLowerCase();
-    
-    if (expenses.length === 0) {
-      return "It looks like you don't have any expense records yet. Please log some expenses first so I can analyze them!";
-    }
+    setMessages((prev) => [...prev, aiMsg]);
+  } finally {
+    setTyping(false);
+  }
+};
 
-    // 1. Total Cumulative Spending query
-    if (q.includes("total") || q.includes("sum") || q.includes("how much did i spend in total")) {
-      const total = expenses.reduce((sum, item) => sum + item.amount, 0);
-      return `Your total cumulative spending across all categories is ${formatCurrency(total)} based on ${expenses.length} transaction entries.`;
-    }
-
-    // 2. Highest / Largest expense query
-    if (q.includes("highest") || q.includes("largest") || q.includes("biggest") || q.includes("most")) {
-      const maxExpense = [...expenses].sort((a, b) => b.amount - a.amount)[0];
-      return `Your highest single expense is "${maxExpense.description}" under the category "${maxExpense.category}", amounting to ${formatCurrency(maxExpense.amount)} on ${formatDate(maxExpense.expenseDate)}.`;
-    }
-
-    // 3. Average size query
-    if (q.includes("average") || q.includes("avg") || q.includes("mean")) {
-      const total = expenses.reduce((sum, item) => sum + item.amount, 0);
-      const avg = total / expenses.length;
-      return `Your average transaction size is ${formatCurrency(avg)} across your ${expenses.length} logged items.`;
-    }
-
-    // 4. Counts of logs query
-    if (q.includes("count") || q.includes("how many") || q.includes("number of")) {
-      return `You have recorded exactly ${expenses.length} transactions in your ledger.`;
-    }
-
-    // 5. Category-wise query (Food, Transport, Rent, Utilities, Healthcare, Shopping, Education, Other)
-    const matchingCategories = expenses.map(e => e.category.toLowerCase());
-    const matchedCategory = matchingCategories.find(cat => q.includes(cat));
-
-    if (matchedCategory) {
-      // Find the proper-cased category name
-      const properCat = expenses.find(e => e.category.toLowerCase() === matchedCategory).category;
-      const catExpenses = expenses.filter(e => e.category.toLowerCase() === matchedCategory);
-      const catTotal = catExpenses.reduce((sum, item) => sum + item.amount, 0);
-      
-      return `You have spent a total of ${formatCurrency(catTotal)} on ${properCat} across ${catExpenses.length} entries. This represents ${((catTotal / expenses.reduce((s,i) => s + i.amount, 0)) * 100).toFixed(1)}% of your overall spending.`;
-    }
-
-    // FALLBACK
-    /*
-     * DEVELOPER ARCHITECTURE NOTE:
-     * To integrate a real LLM (like Google Gemini API via a backend route /api/ai/chat):
-     * Replace this entire local logic with:
-     * 
-     * try {
-     *   const res = await axios.post("/api/ai/chat", { prompt: query, currentLedger: expenses });
-     *   return res.data.response;
-     * } catch(err) {
-     *   return "Sorry, I couldn't reach the AI brain server.";
-     * }
-     */
-    return "I am your Smart Finance Assistant. I can analyze your transaction ledger in real-time. Try asking me:\n\n• 'What is my total spent?'\n• 'What was my highest expense?'\n• 'How much did I spend on Food?'\n• 'What is my average transaction size?'";
-  };
-
+  
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 180px)", minHeight: 480 }}>
       {/* Header Info Banner */}
