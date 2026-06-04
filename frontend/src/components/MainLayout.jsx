@@ -9,13 +9,17 @@ import {
   PieChartOutlined,
   RobotOutlined,
   MenuOutlined,
+  SunOutlined,
+  MoonOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTheme } from "../utils/ThemeContext";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
 const MainLayout = ({ children }) => {
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileVisible, setMobileVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -102,7 +106,7 @@ const MainLayout = ({ children }) => {
   };
 
   const SidebarContent = (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", backgroundColor: isDarkMode ? "#1e293b" : "#ffffff" }}>
       {/* Brand Logo / Title */}
       <div
         style={{
@@ -110,7 +114,7 @@ const MainLayout = ({ children }) => {
           display: "flex",
           alignItems: "center",
           paddingLeft: collapsed ? 24 : 24,
-          borderBottom: "1px solid #f1f5f9",
+          borderBottom: isDarkMode ? "1px solid #334155" : "1px solid #f1f5f9",
           transition: "all 0.2s",
         }}
       >
@@ -127,7 +131,7 @@ const MainLayout = ({ children }) => {
               boxShadow: "0 4px 10px rgba(79, 70, 229, 0.25)",
             }}
           >
-            <span style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>$</span>
+            <span style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>₹</span>
           </div>
           {!collapsed && (
             <Title
@@ -143,12 +147,12 @@ const MainLayout = ({ children }) => {
 
       {/* Navigation Menu */}
       <Menu
-        theme="light"
+        theme={isDarkMode ? "dark" : "light"}
         mode="inline"
         selectedKeys={[getActiveKey()]}
         onClick={handleMenuClick}
         items={menuItems}
-        style={{ borderRight: 0, paddingTop: 16, flexGrow: 1 }}
+        style={{ borderRight: 0, paddingTop: 16, flexGrow: 1, backgroundColor: isDarkMode ? "#1e293b" : "#ffffff" }}
       />
 
       {/* Sidebar Footer info */}
@@ -156,7 +160,7 @@ const MainLayout = ({ children }) => {
         <div
           style={{
             padding: "16px 24px",
-            borderTop: "1px solid #f1f5f9",
+            borderTop: isDarkMode ? "1px solid #334155" : "1px solid #f1f5f9",
             textAlign: "left",
           }}
         >
@@ -178,15 +182,16 @@ const MainLayout = ({ children }) => {
           collapsible
           collapsed={collapsed}
           width={240}
-          theme="light"
+          theme={isDarkMode ? "dark" : "light"}
           style={{
-            boxShadow: "2px 0 8px rgba(148, 163, 184, 0.05)",
+            boxShadow: isDarkMode ? "2px 0 8px rgba(0, 0, 0, 0.2)" : "2px 0 8px rgba(148, 163, 184, 0.05)",
             position: "fixed",
             left: 0,
             top: 0,
             bottom: 0,
             zIndex: 100,
-            borderRight: "1px solid #e2e8f0",
+            borderRight: isDarkMode ? "1px solid #334155" : "1px solid #e2e8f0",
+            background: isDarkMode ? "#1e293b" : "#ffffff",
           }}
         >
           {SidebarContent}
@@ -218,12 +223,12 @@ const MainLayout = ({ children }) => {
         <Header
           style={{
             padding: "0 24px",
-            background: "#ffffff",
+            background: isDarkMode ? "#1e293b" : "#ffffff",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            boxShadow: "0 2px 8px rgba(148, 163, 184, 0.04)",
-            borderBottom: "1px solid #e2e8f0",
+            boxShadow: isDarkMode ? "0 2px 8px rgba(0, 0, 0, 0.2)" : "0 2px 8px rgba(148, 163, 184, 0.04)",
+            borderBottom: isDarkMode ? "1px solid #334155" : "1px solid #e2e8f0",
             position: "sticky",
             top: 0,
             zIndex: 90,
@@ -235,14 +240,14 @@ const MainLayout = ({ children }) => {
             {isMobile ? (
               <Button
                 type="text"
-                icon={<MenuOutlined />}
+                icon={<MenuOutlined style={{ color: isDarkMode ? "#94a3b8" : "inherit" }} />}
                 onClick={() => setMobileVisible(true)}
                 style={{ fontSize: 16, width: 40, height: 40 }}
               />
             ) : (
               <Button
                 type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                icon={collapsed ? <MenuUnfoldOutlined style={{ color: isDarkMode ? "#94a3b8" : "inherit" }} /> : <MenuFoldOutlined style={{ color: isDarkMode ? "#94a3b8" : "inherit" }} />}
                 onClick={() => setCollapsed(!collapsed)}
                 style={{ fontSize: 16, width: 40, height: 40 }}
               />
@@ -252,7 +257,7 @@ const MainLayout = ({ children }) => {
             <Title
               level={4}
               className="heading-font"
-              style={{ margin: 0, fontWeight: 700 }}
+              style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "inherit" }}
             >
               {getPageTitle()}
             </Title>
@@ -260,12 +265,26 @@ const MainLayout = ({ children }) => {
 
           {/* User profile / Internship tag */}
           <Space size="middle">
+            <Button
+              type="text"
+              icon={isDarkMode ? <SunOutlined style={{ color: "#fbbf24", fontSize: 18 }} /> : <MoonOutlined style={{ color: "#475569", fontSize: 18 }} />}
+              onClick={toggleDarkMode}
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: isDarkMode ? "rgba(251, 191, 36, 0.15)" : "#f1f5f9",
+              }}
+            />
             <Badge
               count="AI Internship"
               style={{
-                backgroundColor: "#e0e7ff",
-                color: "#4f46e5",
-                borderColor: "#c7d2fe",
+                backgroundColor: isDarkMode ? "#312e81" : "#e0e7ff",
+                color: isDarkMode ? "#c7d2fe" : "#4f46e5",
+                borderColor: isDarkMode ? "#4338ca" : "#c7d2fe",
                 fontWeight: 600,
                 padding: "0 8px",
               }}

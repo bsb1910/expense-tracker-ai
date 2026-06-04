@@ -1,12 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, Input, Button, Avatar, Space, Typography, Tag } from "antd";
 import { SendOutlined, RobotOutlined, UserOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { marked } from "marked";
 import {
   expenseService,
   assistantService,
 } from "../services/api";
 
 const { Text, Title, Paragraph } = Typography;
+
+// Helper to parse markdown
+const parseMarkdown = (text) => {
+  try {
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+    });
+    return marked.parse(text || "");
+  } catch (err) {
+    console.error("Markdown parsing error:", err);
+    return text || "";
+  }
+};
 
 const AIAssistant = () => {
   const [expenses, setExpenses] = useState([]);
@@ -168,10 +183,16 @@ const AIAssistant = () => {
                     className={msg.sender === "user" ? "chat-bubble-user" : "chat-bubble-ai"}
                     style={{
                       padding: "12px 18px",
-                      whiteSpace: "pre-line",
                     }}
                   >
-                    <Paragraph style={{ margin: 0, color: "inherit" }}>{msg.text}</Paragraph>
+                    {msg.sender === "user" ? (
+                      <Paragraph style={{ margin: 0, color: "inherit", whiteSpace: "pre-line" }}>{msg.text}</Paragraph>
+                    ) : (
+                      <div
+                        style={{ margin: 0, color: "inherit" }}
+                        dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.text) }}
+                      />
+                    )}
                     <div
                       style={{
                         textAlign: "right",

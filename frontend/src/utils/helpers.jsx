@@ -27,11 +27,13 @@ import {
  */
 export const formatCurrency = (value) => {
   if (value === undefined || value === null || isNaN(value)) {
-    return "$0.00";
+    return "₹0";
   }
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("en-IN", {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(value);
 };
 

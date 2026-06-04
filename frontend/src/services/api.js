@@ -29,7 +29,7 @@ export const expenseService = {
   addExpense: async (expenseData) => {
     const response = await apiClient.post("/expenses", expenseData);
     return response.data;
-  },
+  },  
 
   // Update expense
   updateExpense: async (id, expenseData) => {

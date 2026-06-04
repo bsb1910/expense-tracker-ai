@@ -326,8 +326,8 @@ const Expenses = () => {
           >
             <InputNumber
               style={{ width: "100%" }}
-              formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              formatter={(value) => `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              parser={(value) => value.replace(/₹\s?|(,*)/g, "")}
               placeholder="0.00"
               precision={2}
               size="large"

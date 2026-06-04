@@ -12,6 +12,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  BarChart,
+  Bar,
 } from "recharts";
 import {
   RiseOutlined,
@@ -21,10 +23,12 @@ import {
 } from "@ant-design/icons";
 import { expenseService } from "../services/api";
 import { formatCurrency, getCategoryStyles, CHART_COLORS } from "../utils/helpers";
+import { useTheme } from "../utils/ThemeContext";
 
 const { Title, Text } = Typography;
 
 const Analytics = () => {
+  const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(true);
   const [expenses, setExpenses] = useState([]);
   const [timeRange, setTimeRange] = useState("All");
@@ -167,6 +171,30 @@ const Analytics = () => {
     return null;
   };
 
+  const CustomBarTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0];
+      return (
+        <Card
+          size="small"
+          style={{
+            background: "rgba(15, 23, 42, 0.95)",
+            border: "none",
+            borderRadius: 8,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          }}
+          bodyStyle={{ padding: "8px 12px" }}
+        >
+          <Text style={{ color: "#f8fafc", fontWeight: 600, display: "block" }}>{data.payload.name}</Text>
+          <Text style={{ color: "#10b981", fontWeight: 700, fontSize: 15 }}>
+            {formatCurrency(data.value)}
+          </Text>
+        </Card>
+      );
+    }
+    return null;
+  };
+
   // Stats computation
   const totalSpent = filteredData.reduce((sum, item) => sum + item.amount, 0);
   const averageSpent = filteredData.length > 0 ? totalSpent / filteredData.length : 0;
@@ -184,16 +212,22 @@ const Analytics = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      {/* Filters & Statistics Summary bar */}
+      {/* Filters & Title bar */}
       <Card className="premium-card">
-        <Row gutter={[24, 24]} align="middle">
-          <Col xs={24} md={6}>
-            <Space direction="vertical" size={2}>
-              <Text type="secondary" style={{ fontSize: 12, textTransform: "uppercase" }}>Time Interval</Text>
+        <Row gutter={[16, 16]} align="middle" justify="space-between">
+          <Col xs={24} sm={12}>
+            <Title level={4} className="heading-font" style={{ margin: 0, color: isDarkMode ? "#ffffff" : "#0f172a" }}>
+              Spending Analytics
+            </Title>
+            <Text type="secondary">Explore visual trends and patterns of your expenditures.</Text>
+          </Col>
+          <Col xs={24} sm={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Space direction="vertical" size={2} style={{ width: "100%", maxWidth: 240 }}>
+              <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.5px" }}>Time Interval</Text>
               <Select
                 value={timeRange}
                 onChange={setTimeRange}
-                style={{ width: "100%", minWidth: 180 }}
+                style={{ width: "100%" }}
                 options={[
                   { value: "All", label: "All Time" },
                   { value: "30", label: "Last 30 Days" },
@@ -203,36 +237,63 @@ const Analytics = () => {
               />
             </Space>
           </Col>
-          <Col xs={24} md={18}>
-            <Row gutter={[16, 16]}>
-              <Col xs={12} sm={8}>
-                <Statistic
-                  title="Period Spend"
-                  value={totalSpent}
-                  formatter={(val) => <span style={{ fontWeight: 700, fontSize: 20 }}>{formatCurrency(val)}</span>}
-                  prefix={<RiseOutlined style={{ color: "#4f46e5", marginRight: 4 }} />}
-                />
-              </Col>
-              <Col xs={12} sm={8}>
-                <Statistic
-                  title="Average / Log"
-                  value={averageSpent}
-                  formatter={(val) => <span style={{ fontWeight: 700, fontSize: 20 }}>{formatCurrency(val)}</span>}
-                  prefix={<CalendarOutlined style={{ color: "#06b6d4", marginRight: 4 }} />}
-                />
-              </Col>
-              <Col xs={24} sm={8}>
-                <Statistic
-                  title="Highest Expense"
-                  value={maxExpense}
-                  formatter={(val) => <span style={{ fontWeight: 700, fontSize: 20 }}>{formatCurrency(val)}</span>}
-                  prefix={<ThunderboltOutlined style={{ color: "#ec4899", marginRight: 4 }} />}
-                />
-              </Col>
-            </Row>
-          </Col>
         </Row>
       </Card>
+
+      {/* KPI Cards section */}
+      <Row gutter={[24, 24]}>
+        <Col xs={24} sm={8}>
+          <Card className="premium-card metric-card-total" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Cumulative Outflow</Text>
+                <div style={{ marginTop: 6 }}>
+                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+                    {formatCurrency(totalSpent)}
+                  </Title>
+                </div>
+              </div>
+              <div style={{ background: "rgba(79, 70, 229, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <RiseOutlined style={{ color: "#4f46e5", fontSize: 22 }} />
+              </div>
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={8}>
+          <Card className="premium-card metric-card-categories" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Average / Entry</Text>
+                <div style={{ marginTop: 6 }}>
+                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+                    {formatCurrency(averageSpent)}
+                  </Title>
+                </div>
+              </div>
+              <div style={{ background: "rgba(6, 182, 212, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CalendarOutlined style={{ color: "#06b6d4", fontSize: 22 }} />
+              </div>
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={8}>
+          <Card className="premium-card metric-card-summary" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Peak Transaction</Text>
+                <div style={{ marginTop: 6 }}>
+                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+                    {formatCurrency(maxExpense)}
+                  </Title>
+                </div>
+              </div>
+              <div style={{ background: "rgba(16, 185, 129, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <ThunderboltOutlined style={{ color: "#10b981", fontSize: 22 }} />
+              </div>
+            </div>
+          </Card>
+        </Col>
+      </Row>
 
       {/* Main charts */}
       {filteredData.length === 0 ? (
@@ -240,128 +301,179 @@ const Analytics = () => {
           <Empty description="Not enough expense records to plot visualizations. Try logging some transactions first!" />
         </Card>
       ) : (
-        <Row gutter={[24, 24]}>
-          {/* Category distribution Pie/Donut Chart */}
-          <Col xs={24} lg={10}>
-            <Card
-              title={
-                <span className="heading-font" style={{ fontWeight: 700, fontSize: 16 }}>
-                  Category Allocations
-                </span>
-              }
-              className="premium-card"
-              style={{ height: "100%" }}
-            >
-              <div style={{ height: 320, display: "flex", justifyContent: "center" }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={categoryData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={65}
-                      outerRadius={90}
-                      paddingAngle={4}
-                      dataKey="value"
-                    >
-                      {categoryData.map((entry, index) => {
-                        const style = getCategoryStyles(entry.name);
-                        return (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={style.color || CHART_COLORS[index % CHART_COLORS.length]}
-                          />
-                        );
-                      })}
-                    </Pie>
-                    <ChartTooltip content={<CustomPieTooltip />} />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      iconType="circle"
-                      iconSize={8}
-                      formatter={(value, entry) => (
-                        <span style={{ fontSize: 12, color: "#475569", fontWeight: 500 }}>
-                          {value}
-                        </span>
-                      )}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </Card>
-          </Col>
-
-          {/* Monthly Spending Trend Chart */}
-          <Col xs={24} lg={14}>
-            <Card
-              title={
-                <span className="heading-font" style={{ fontWeight: 700, fontSize: 16 }}>
-                  Monthly Cash Trend
-                </span>
-              }
-              className="premium-card"
-              style={{ height: "100%" }}
-            >
-              <div style={{ height: 320 }}>
-                {monthlyData.length < 2 ? (
-                  <div
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      color: "#94a3b8",
-                      gap: 8,
-                    }}
-                  >
-                    <PieChartOutlined style={{ fontSize: 32 }} />
-                    <Text type="secondary">Accumulate expenses across multiple months to populate trends.</Text>
-                  </div>
-                ) : (
+        <>
+          <Row gutter={[24, 24]}>
+            {/* Category distribution Pie/Donut Chart */}
+            <Col xs={24} lg={10}>
+              <Card
+                title={
+                  <span className="heading-font" style={{ fontWeight: 700, fontSize: 16 }}>
+                    Category Allocations
+                  </span>
+                }
+                className="premium-card"
+                style={{ height: "100%" }}
+              >
+                <div style={{ height: 320, display: "flex", justifyContent: "center" }}>
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                      data={monthlyData}
-                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    <PieChart>
+                      <Pie
+                        data={categoryData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={65}
+                        outerRadius={90}
+                        paddingAngle={4}
+                        dataKey="value"
+                      >
+                        {categoryData.map((entry, index) => {
+                          const style = getCategoryStyles(entry.name);
+                          return (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={style.color || CHART_COLORS[index % CHART_COLORS.length]}
+                            />
+                          );
+                        })}
+                      </Pie>
+                      <ChartTooltip content={<CustomPieTooltip />} />
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        iconType="circle"
+                        iconSize={8}
+                        formatter={(value) => (
+                          <span style={{ fontSize: 12, color: isDarkMode ? "#94a3b8" : "#475569", fontWeight: 500 }}>
+                            {value}
+                          </span>
+                        )}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
+            </Col>
+
+            {/* Monthly Spending Trend Chart */}
+            <Col xs={24} lg={14}>
+              <Card
+                title={
+                  <span className="heading-font" style={{ fontWeight: 700, fontSize: 16 }}>
+                    Monthly Cash Trend
+                  </span>
+                }
+                className="premium-card"
+                style={{ height: "100%" }}
+              >
+                <div style={{ height: 320 }}>
+                  {monthlyData.length < 2 ? (
+                    <div
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        color: "#94a3b8",
+                        gap: 8,
+                      }}
                     >
-                      <defs>
-                        <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#4f46e5" stopOpacity={0.0} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                      <PieChartOutlined style={{ fontSize: 32 }} />
+                      <Text type="secondary">Accumulate expenses across multiple months to populate trends.</Text>
+                    </div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={monthlyData}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#4f46e5" stopOpacity={0.0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#f1f5f9"} />
+                        <XAxis
+                          dataKey="month"
+                          stroke="#94a3b8"
+                          fontSize={11}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <YAxis
+                          stroke="#94a3b8"
+                          fontSize={11}
+                          tickLine={false}
+                          axisLine={false}
+                          tickFormatter={(v) => `₹${v}`}
+                        />
+                        <ChartTooltip content={<CustomTrendTooltip />} />
+                        <Area
+                          type="monotone"
+                          dataKey="amount"
+                          stroke="#4f46e5"
+                          strokeWidth={3}
+                          fillOpacity={1}
+                          fill="url(#colorAmount)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  )}
+                </div>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Category spending bar chart comparison */}
+          <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
+            <Col xs={24}>
+              <Card
+                title={
+                  <span className="heading-font" style={{ fontWeight: 700, fontSize: 16 }}>
+                    Category Spending Comparison
+                  </span>
+                }
+                className="premium-card"
+              >
+                <div style={{ height: 350 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={categoryData} margin={{ top: 20, right: 30, left: -10, bottom: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#f1f5f9"} />
                       <XAxis
-                        dataKey="month"
+                        dataKey="name"
                         stroke="#94a3b8"
                         fontSize={11}
                         tickLine={false}
                         axisLine={false}
+                        dy={10}
                       />
                       <YAxis
                         stroke="#94a3b8"
                         fontSize={11}
                         tickLine={false}
                         axisLine={false}
-                        tickFormatter={(v) => `$${v}`}
+                        tickFormatter={(v) => `₹${v}`}
                       />
-                      <ChartTooltip content={<CustomTrendTooltip />} />
-                      <Area
-                        type="monotone"
-                        dataKey="amount"
-                        stroke="#4f46e5"
-                        strokeWidth={3}
-                        fillOpacity={1}
-                        fill="url(#colorAmount)"
-                      />
-                    </AreaChart>
+                      <ChartTooltip content={<CustomBarTooltip />} />
+                      <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={50}>
+                        {categoryData.map((entry, index) => {
+                          const style = getCategoryStyles(entry.name);
+                          return (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={style.color || CHART_COLORS[index % CHART_COLORS.length]}
+                            />
+                          );
+                        })}
+                      </Bar>
+                    </BarChart>
                   </ResponsiveContainer>
-                )}
-              </div>
-            </Card>
-          </Col>
-        </Row>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+        </>
       )}
     </div>
   );
