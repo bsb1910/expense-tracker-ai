@@ -1,10 +1,55 @@
-# AI-Powered Expense Tracker with Smart Assistant
+# AI-Powered Expense Tracker with Smart Financial Assistant
 
 ## Overview
 
-AI-Powered Expense Tracker is a full-stack MERN application designed to help users manage expenses, analyze spending patterns, visualize financial data, and prepare for AI-powered financial insights.
+AI-Powered Expense Tracker is a full-stack MERN application that helps users manage expenses, analyze spending patterns, visualize financial data, and receive AI-powered financial insights.
 
-The project is being developed as part of an AI Engineering Internship (June 2026) and focuses on full-stack development, backend analytics, and future AI integration.
+The application combines traditional expense tracking with Artificial Intelligence to provide personalized spending analysis, savings recommendations, financial reports, and category-wise insights based on real expense data stored in MongoDB.
+
+Developed as part of an AI Engineering Internship (June 2026).
+
+---
+
+## Key Highlights
+
+### Expense Management
+
+* Add, Edit, Delete, and View Expenses
+* Real-time Expense Tracking
+* Category-Based Organization
+* Expense Search & Filtering
+* Form Validation
+* Pagination Support
+
+### Advanced Analytics
+
+* Spending Statistics Dashboard
+* Category-wise Expense Analysis
+* Interactive Pie Charts
+* Category Comparison Bar Charts
+* Highest & Lowest Expense Tracking
+* Average Expense Analysis
+* Monthly Spending Overview
+
+### AI-Powered Financial Assistant
+
+* OpenRouter LLM Integration
+* Expense-Aware Responses
+* Spending Pattern Analysis
+* Financial Health Reports
+* Savings Recommendations
+* Personalized Financial Insights
+* Monthly Expense Reports
+* Structured Markdown-Based AI Responses
+
+### Modern User Experience
+
+* Professional SaaS-style UI
+* Dark Mode Support
+* Light/Dark Theme Persistence
+* Indian Currency Formatting (₹)
+* Responsive Design
+* Interactive Charts & Visualizations
 
 ---
 
@@ -26,8 +71,8 @@ The project is being developed as part of an AI Engineering Internship (June 202
 * Dynamic Category System
 * 20+ Expense Categories
 * Category Statistics
-* Category-wise Expense Tracking
-* Category Icons and Color Themes
+* Category-wise Tracking
+* Category Themes & Icons
 
 Supported Categories:
 
@@ -60,48 +105,91 @@ Supported Categories:
 
 The Dashboard provides a quick overview of financial activity.
 
-Features:
+### Features
 
 * Total Spending Summary
-* Monthly Spending Overview
+* Average Expense Statistics
+* Highest Expense Tracking
+* Total Transaction Count
 * Active Categories Count
 * Recent Expense Activity
 * Quick Navigation Actions
+* KPI Statistics Cards
 
 ---
 
-## Analytics
+## Analytics Module
 
-Analytics module provides expense insights and visualizations.
+Provides detailed spending insights and visualizations.
 
-Features:
+### Features
 
 * Category-wise Expense Distribution
 * Interactive Pie Charts
+* Category Comparison Bar Charts
 * Total Spending Statistics
-* Average Expense Calculation
-* Highest Expense Tracking
-* Time-based Filtering
+* Average Expense Analysis
+* Highest & Lowest Expense Tracking
+* Spending Trend Visualization
 * Backend Analytics APIs
+
+### Visualizations
+
+* Pie Chart for Expense Distribution
+* Bar Chart for Category Comparison
+* Financial KPI Cards
+* Category Performance Indicators
 
 ---
 
-## AI Assistant
+## AI Financial Assistant
 
-Current Features:
+The AI Assistant is connected to MongoDB expense data and generates personalized financial insights.
 
-* AI Assistant Interface
-* Chat Layout
-* Suggested Questions
-* Message History UI
+### Current Capabilities
 
-Planned Features:
+* Analyze Spending Habits
+* Generate Financial Health Reports
+* Provide Savings Recommendations
+* Category-wise Expense Analysis
+* Monthly Financial Reports
+* Budget Suggestions
+* Financial Advisor Style Responses
+* Expense-Aware Question Answering
 
-* Expense-Based Question Answering
-* Spending Pattern Analysis
-* Financial Recommendations
-* Savings Suggestions
-* AI-Powered Insights using LLMs
+### Example Questions
+
+* Analyze my spending habits
+* How can I save more money?
+* Which category do I spend the most on?
+* Generate a financial health report
+* Create a budget plan for me
+* Give me a summary of my expenses
+* What are my biggest spending categories?
+
+### Example AI Output
+
+# Spending Analysis
+
+## Overall Summary
+
+* Total Expenses: ₹3,999
+* Transactions: 12
+* Average Expense: ₹333.25
+
+## Category Breakdown
+
+1. Food — ₹1,600
+2. Electronics — ₹1,050
+3. Gym/Fitness — ₹1,000
+
+## Recommendations
+
+✓ Reduce restaurant spending
+
+✓ Delay non-essential electronics purchases
+
+✓ Create monthly category budgets
 
 ---
 
@@ -121,6 +209,16 @@ DELETE /api/expenses/:id
 ```http
 GET /api/expenses/stats
 GET /api/expenses/category-summary
+```
+
+### AI APIs
+
+```http
+GET /api/ai/summary
+GET /api/ai/category-analysis
+GET /api/ai/recommendations
+GET /api/ai/monthly-report
+POST /api/assistant/chat
 ```
 
 ### Monitoring API
@@ -149,29 +247,71 @@ Returns:
 Returns:
 
 * Category Name
-* Total Spending per Category
-* Number of Transactions per Category
+* Total Spending
+* Transaction Count
 
-Built using MongoDB Aggregation Pipelines:
+### Financial Summary API
 
-* $group
-* $sum
-* $project
-* $sort
+Returns:
+
+* Total Expenses
+* Average Expense
+* Highest Expense
+* Lowest Expense
+* Total Records
+
+### Category Analysis API
+
+Returns:
+
+* Category Totals
+* Top Spending Category
+* Category Breakdown
+
+### Recommendations API
+
+Returns:
+
+* Savings Suggestions
+* Spending Recommendations
+* Financial Insights
+
+### Monthly Report API
+
+Returns:
+
+* Monthly Summary
+* Top Spending Category
+* Spending Statistics
+* Recommendations
+
+### AI Chat API
+
+Provides:
+
+* Expense-Aware Responses
+* Financial Analysis
+* Spending Insights
+* Personalized Recommendations
 
 ---
 
 ## Validation & Error Handling
 
-Implemented Backend Validation:
+### Backend Validation
 
 * Description Required
 * Amount Required
-* Amount Greater Than Zero
+* Amount > 0
 * Category Required
 * Expense Date Required
 
-Invalid requests are rejected before reaching the database.
+### Error Handling
+
+* Invalid Request Handling
+* API Error Responses
+* Database Validation
+* Frontend Error Notifications
 
 ---
 
@@ -184,6 +324,8 @@ Invalid requests are rejected before reaching the database.
 * Ant Design
 * Axios
 * React Router
+* Recharts
+* Marked (Markdown Rendering)
 
 ### Backend
 
@@ -192,11 +334,20 @@ Invalid requests are rejected before reaching the database.
 * MongoDB Atlas
 * Mongoose
 
-### AI Integration (Planned)
+### AI & Analytics
 
-* Google Gemini API
-* OpenAI API
-* RAG-Based Financial Assistant
+* OpenRouter API
+* LLM-Based Financial Assistant
+* Prompt Engineering
+* Expense Context Injection
+* Financial Analytics Engine
+
+### Development Tools
+
+* Git
+* GitHub
+* VS Code
+* Postman
 
 ---
 
@@ -208,12 +359,20 @@ expense-tracker-ai
 ├── backend
 │   ├── config
 │   │   └── db.js
+│   │
 │   ├── controllers
-│   │   └── expenseController.js
+│   │   ├── expenseController.js
+│   │   ├── assistantController.js
+│   │   └── aiController.js
+│   │
 │   ├── models
 │   │   └── Expense.js
+│   │
 │   ├── routes
-│   │   └── expenseRoutes.js
+│   │   ├── expenseRoutes.js
+│   │   ├── assistantRoutes.js
+│   │   └── aiRoutes.js
+│   │
 │   ├── middleware
 │   ├── utils
 │   ├── .env
@@ -223,15 +382,24 @@ expense-tracker-ai
 ├── frontend
 │   ├── src
 │   │   ├── components
+│   │   │   └── MainLayout.jsx
+│   │   │
 │   │   ├── pages
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── Expenses.jsx
 │   │   │   ├── Categories.jsx
 │   │   │   ├── Analytics.jsx
 │   │   │   └── AIAssistant.jsx
+│   │   │
 │   │   ├── services
+│   │   │   └── api.js
+│   │   │
 │   │   ├── utils
-│   │   └── App.jsx
+│   │   │   ├── helpers.jsx
+│   │   │   └── ThemeContext.jsx
+│   │   │
+│   │   ├── App.jsx
+│   │   └── index.css
 │   │
 │   ├── package.json
 │   └── vite.config.js
@@ -242,7 +410,7 @@ expense-tracker-ai
 
 ---
 
-## Project Status
+## Current Project Status
 
 ### Completed
 
@@ -252,48 +420,63 @@ expense-tracker-ai
 * Expense Validation ✅
 * Statistics API ✅
 * Category Summary API ✅
-* Health Check API ✅
+* Financial Summary API ✅
+* Category Analysis API ✅
+* Savings Recommendation Engine ✅
+* Monthly Report API ✅
+* OpenRouter Integration ✅
+* Expense-Aware AI Assistant ✅
+* Spending Pattern Analysis ✅
+* Financial Insights Engine ✅
 * React Frontend Setup ✅
 * Dashboard UI ✅
 * Expense Management UI ✅
 * Categories UI ✅
-* Analytics UI ✅
-* AI Assistant UI ✅
-* Axios Integration ✅
+* Analytics Dashboard ✅
+* Interactive Charts ✅
+* Dark Mode System ✅
+* Indian Currency Formatting (₹) ✅
+* Markdown AI Reports ✅
 * GitHub Repository Setup ✅
 
-### In Progress
+### Currently Developing
 
-* AI Assistant Logic 🔄
-* Frontend Analytics Integration 🔄
-* Enhanced Backend Validation 🔄
+* RAG-Based AI Assistant 🔄
+* Advanced Financial Forecasting 🔄
 
 ### Planned
 
-* User Authentication ⏳
-* Gemini/OpenAI Integration ⏳
-* AI Financial Insights ⏳
-* Monthly Reports ⏳
-* Spending Pattern Analysis ⏳
-* Savings Recommendations ⏳
-* RAG-Based Financial Assistant ⏳
-* Cloud Deployment ⏳
+* User Authentication
+* PDF Report Generation
+* Expense Forecasting
+* Cloud Deployment
+* Knowledge Base Assistant
 
 ---
 
 ## Current Progress
 
-Estimated Project Completion:
+Estimated Completion:
 
-**90% Complete**
+### 95% Complete
 
-Major remaining work involves AI integration, authentication, and deployment.
+Core Expense Tracking System: ✅ Complete
+
+AI Financial Assistant: ✅ Complete
+
+Advanced Analytics Dashboard: ✅ Complete
+
+Remaining Work:
+
+* RAG-Based Assistant
+* Authentication
+* Deployment
 
 ---
 
 ## Author
 
-**Bhagyesh Bhatt**
+Bhagyesh Bhatt
 
 B.Tech Computer Science Engineering
 
