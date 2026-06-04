@@ -27,6 +27,7 @@ const Dashboard = () => {
     prevMonthTotal: 0,
     percentChange: 0,
   });
+  const [stats, setStats] = useState(null);
 
   const navigate = useNavigate();
 
@@ -35,29 +36,40 @@ const Dashboard = () => {
   }, []);
 
   const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      // Fetch expenses and categories
-      const [expenseRes, categoryList] = await Promise.all([
-        expenseService.getExpenses(),
-        categoryService.getCategories(),
-      ]);
+   const [expenseRes, statsRes, categoryList] = await Promise.all([
+  expenseService.getExpenses(),
+  expenseService.getStats(),
+  categoryService.getCategories(),
+]);
 
-      const fetchedExpenses = expenseRes.data || [];
-      setExpenses(fetchedExpenses);
-      setCategoriesCount(categoryList.length);
+console.log("expenseRes:", expenseRes);
+console.log("statsRes:", statsRes);
+console.log("categoryList:", categoryList);
 
-      // Compute statistics
-      computeStats(fetchedExpenses);
-    } catch (err) {
-      console.error("Dashboard loading error:", err);
-      setError("Failed to load dashboard metrics. Please check if your backend server is running.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchedExpenses = expenseRes.data || [];
+
+    setExpenses(fetchedExpenses);
+    setCategoriesCount(categoryList.length);
+
+    // Store backend stats
+    setStats(statsRes.data);
+
+    // Existing dashboard calculations
+    computeStats(fetchedExpenses);
+  } catch (err) {
+    console.error("Dashboard loading error:", err);
+
+    setError(
+      "Failed to load dashboard metrics. Please check if backend server is running."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   const computeStats = (items) => {
     const total = items.reduce((acc, curr) => acc + curr.amount, 0);
@@ -186,7 +198,7 @@ const Dashboard = () => {
                   Cumulative Spending
                 </Text>
               }
-              value={metrics.total}
+              value={stats?.totalExpenses || 0}
               precision={2}
               formatter={(val) => (
                 <span className="heading-font gradient-text" style={{ fontSize: 32, fontWeight: 700 }}>

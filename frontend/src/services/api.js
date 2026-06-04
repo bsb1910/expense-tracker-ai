@@ -16,25 +16,31 @@ export const expenseService = {
   // Fetch all expenses
   getExpenses: async () => {
     const response = await apiClient.get("/expenses");
-    return response.data; // Expected format: { success: true, count: X, data: [...] }
+    return response.data;
+  },
+
+  // Fetch dashboard statistics
+  getStats: async () => {
+    const response = await apiClient.get("/expenses/stats");
+    return response.data;
   },
 
   // Add a new expense
   addExpense: async (expenseData) => {
     const response = await apiClient.post("/expenses", expenseData);
-    return response.data; // Expected format: { success: true, data: {...} }
+    return response.data;
   },
 
-  // Update an existing expense
+  // Update expense
   updateExpense: async (id, expenseData) => {
     const response = await apiClient.put(`/expenses/${id}`, expenseData);
-    return response.data; // Expected format: { success: true, data: {...} }
+    return response.data;
   },
 
-  // Delete an expense
+  // Delete expense
   deleteExpense: async (id) => {
     const response = await apiClient.delete(`/expenses/${id}`);
-    return response.data; // Expected format: { success: true, message: "..." }
+    return response.data;
   },
 };
 

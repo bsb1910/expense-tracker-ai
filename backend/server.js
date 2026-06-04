@@ -1,15 +1,14 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 
+const assistantRoutes = require("./routes/assistantRoutes");
 const connectDB = require("./config/db");
-
-// Add this line
 const expenseRoutes = require("./routes/expenseRoutes");
 
 dotenv.config();
-
-console.log(process.env.MONGO_URI);
 
 connectDB();
 
@@ -20,6 +19,11 @@ app.use(express.json());
 
 // Add this line here
 app.use("/api/expenses", expenseRoutes);
+
+console.log("assistantRoutes =", assistantRoutes);
+console.log("type =", typeof assistantRoutes);
+
+app.use("/api/assistant", assistantRoutes);
 
 // Health Check API
 app.get("/api/health", (req, res) => {
