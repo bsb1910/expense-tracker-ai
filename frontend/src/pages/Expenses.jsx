@@ -181,9 +181,24 @@ const Expenses = () => {
       render: (category) => {
         const meta = getCategoryStyles(category);
         return (
-          <Tag icon={meta.icon} color={meta.bgColor} style={{ color: meta.color, border: `1px solid ${meta.color}40`, borderRadius: 6 }}>
-            {category}
-          </Tag>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "4px 10px",
+              borderRadius: 20,
+              backgroundColor: meta.bgColor,
+              color: meta.color,
+              fontSize: 12,
+              fontWeight: 600,
+              border: `1px solid ${meta.color}25`,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: meta.color }} />
+            <span style={{ display: "flex", alignItems: "center" }}>{meta.icon}</span>
+            <span style={{ marginLeft: 2 }}>{category}</span>
+          </span>
         );
       },
     },
@@ -195,7 +210,7 @@ const Expenses = () => {
       width: 150,
       sorter: (a, b) => a.amount - b.amount,
       render: (val) => (
-        <span style={{ fontWeight: 600, color: "#0f172a" }}>
+        <span style={{ fontWeight: 600, color: "inherit" }}>
           {formatCurrency(val)}
         </span>
       ),
@@ -281,7 +296,7 @@ const Expenses = () => {
       </Card>
 
       {/* Main ledger list card */}
-      <Card className="premium-card" bodyStyle={{ padding: 0 }}>
+      <Card className="premium-card" styles={{ body: { padding: 0 } }}>
         <Table
           dataSource={filteredExpenses}
           columns={columns}
@@ -304,10 +319,10 @@ const Expenses = () => {
             {editingExpense ? "Edit Expense Log" : "Log New Expense"}
           </span>
         }
-        width={isMobileDrawer() ? "100%" : 480}
+        style={{ width: isMobileDrawer() ? "100%" : 480 }}
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
-        bodyStyle={{ paddingBottom: 80 }}
+        styles={{ body: { paddingBottom: 80 } }}
       >
         <Form
           form={form}

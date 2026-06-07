@@ -19,10 +19,12 @@ import {
 import { PlusOutlined, DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { categoryService, expenseService } from "../services/api";
 import { formatCurrency, getCategoryStyles } from "../utils/helpers";
+import { useTheme } from "../utils/ThemeContext";
 
 const { Title, Text } = Typography;
 
 const Categories = () => {
+  const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -159,7 +161,7 @@ const Categories = () => {
       width: 180,
       sorter: (a, b) => a.spent - b.spent,
       render: (spent) => (
-        <span style={{ fontWeight: 600, color: "#0f172a", fontSize: 15 }}>
+        <span style={{ fontWeight: 600, color: "inherit", fontSize: 15 }}>
           {formatCurrency(spent)}
         </span>
       ),
@@ -178,7 +180,7 @@ const Categories = () => {
               "0%": "#4f46e5",
               "100%": "#06b6d4",
             }}
-            trailColor="#e2e8f0"
+            railColor={isDarkMode ? "#334155" : "#e2e8f0"}
             size="small"
             style={{ flexGrow: 1 }}
           />
@@ -252,7 +254,7 @@ const Categories = () => {
       </Card>
 
       {/* Categories Ledger table */}
-      <Card className="premium-card" bodyStyle={{ padding: 0 }}>
+      <Card className="premium-card" styles={{ body: { padding: 0 } }}>
         <Table
           dataSource={categoryStatsData}
           columns={columns}
@@ -274,7 +276,7 @@ const Categories = () => {
           form.resetFields();
         }}
         footer={null}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form
           form={form}

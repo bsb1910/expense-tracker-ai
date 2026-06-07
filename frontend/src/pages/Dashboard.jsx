@@ -46,9 +46,7 @@ const Dashboard = () => {
   categoryService.getCategories(),
 ]);
 
-console.log("expenseRes:", expenseRes);
-console.log("statsRes:", statsRes);
-console.log("categoryList:", categoryList);
+
 
     const fetchedExpenses = expenseRes.data || [];
 
@@ -123,7 +121,7 @@ console.log("categoryList:", categoryList);
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (text) => <Text strong>{text}</Text>,
+      render: (text) => <Text strong style={{ color: "inherit" }}>{text}</Text>,
     },
     {
       title: "Category",
@@ -132,9 +130,24 @@ console.log("categoryList:", categoryList);
       render: (category) => {
         const meta = getCategoryStyles(category);
         return (
-          <Tag icon={meta.icon} color={meta.bgColor} style={{ color: meta.color, border: `1px solid ${meta.color}40`, borderRadius: 6 }}>
-            {category}
-          </Tag>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "4px 10px",
+              borderRadius: 20,
+              backgroundColor: meta.bgColor,
+              color: meta.color,
+              fontSize: 12,
+              fontWeight: 600,
+              border: `1px solid ${meta.color}25`,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: meta.color }} />
+            <span style={{ display: "flex", alignItems: "center" }}>{meta.icon}</span>
+            <span style={{ marginLeft: 2 }}>{category}</span>
+          </span>
         );
       },
     },
@@ -142,7 +155,7 @@ console.log("categoryList:", categoryList);
       title: "Date",
       dataIndex: "expenseDate",
       key: "expenseDate",
-      render: (date) => formatDate(date),
+      render: (date) => <Text style={{ color: "inherit" }}>{formatDate(date)}</Text>,
     },
     {
       title: "Amount",
@@ -150,7 +163,7 @@ console.log("categoryList:", categoryList);
       key: "amount",
       align: "right",
       render: (val) => (
-        <span style={{ fontWeight: 600, color: "#0f172a" }}>
+        <span style={{ fontWeight: 600, color: "inherit" }}>
           {formatCurrency(val)}
         </span>
       ),
@@ -159,7 +172,7 @@ console.log("categoryList:", categoryList);
 
   if (loading) {
     return (
-      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+      <Space orientation="vertical" size="large" style={{ width: "100%" }}>
         <Row gutter={[24, 24]}>
           <Col xs={24} sm={12} lg={8}><Skeleton active paragraph={{ rows: 2 }} /></Col>
           <Col xs={24} sm={12} lg={8}><Skeleton active paragraph={{ rows: 2 }} /></Col>
@@ -191,25 +204,25 @@ console.log("categoryList:", categoryList);
       <Row gutter={[24, 24]}>
         {/* Total Expenses Card */}
         <Col xs={24} sm={12} lg={8}>
-          <Card className="premium-card metric-card-total" bordered={false}>
-            <Statistic
-              title={
-                <Text type="secondary" style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <Card className="premium-card metric-card-total" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.8px", fontWeight: 600 }}>
                   Cumulative Spending
                 </Text>
-              }
-              value={stats?.totalExpenses || 0}
-              precision={2}
-              formatter={(val) => (
-                <span className="heading-font gradient-text" style={{ fontSize: 32, fontWeight: 700 }}>
-                  {formatCurrency(val)}
-                </span>
-              )}
-              prefix={<DollarCircleOutlined style={{ color: "#4f46e5", fontSize: 24, marginRight: 8 }} />}
-            />
-            <div style={{ marginTop: 12 }}>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font gradient-text" style={{ fontSize: 30, fontWeight: 700, display: "block" }}>
+                    {formatCurrency(stats?.totalExpenses || 0)}
+                  </span>
+                </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(79, 70, 229, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <DollarCircleOutlined style={{ color: "#4f46e5", fontSize: 20 }} />
+              </div>
+            </div>
+            <div>
               <Text type="secondary" style={{ fontSize: 12 }}>
-                Across all categories and entries
+                Aggregate sum of all logged transactions
               </Text>
             </div>
           </Card>
@@ -217,23 +230,24 @@ console.log("categoryList:", categoryList);
 
         {/* Total Categories Card */}
         <Col xs={24} sm={12} lg={8}>
-          <Card className="premium-card metric-card-categories" bordered={false}>
-            <Statistic
-              title={
-                <Text type="secondary" style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <Card className="premium-card metric-card-categories" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.8px", fontWeight: 600 }}>
                   Active Categories
                 </Text>
-              }
-              value={categoriesCount}
-              formatter={(val) => (
-                <span className="heading-font" style={{ fontSize: 32, fontWeight: 700, color: "#0891b2" }}>
-                  {val}
-                </span>
-              )}
-              prefix={<TagsOutlined style={{ color: "#06b6d4", fontSize: 24, marginRight: 8 }} />}
-            />
-            <div style={{ marginTop: 12 }}>
-              <Button type="link" size="small" onClick={() => navigate("/categories")} style={{ padding: 0, height: "auto", color: "#0891b2" }}>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font" style={{ fontSize: 30, fontWeight: 700, color: "#0891b2", display: "block" }}>
+                    {categoriesCount}
+                  </span>
+                </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(6, 182, 212, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <TagsOutlined style={{ color: "#06b6d4", fontSize: 20 }} />
+              </div>
+            </div>
+            <div>
+              <Button type="link" size="small" onClick={() => navigate("/categories")} style={{ padding: 0, height: "auto", color: "#0891b2", fontSize: 12, fontWeight: 500 }}>
                 Manage budgeting tags &rarr;
               </Button>
             </div>
@@ -242,29 +256,29 @@ console.log("categoryList:", categoryList);
 
         {/* Monthly Summary Card */}
         <Col xs={24} sm={24} lg={8}>
-          <Card className="premium-card metric-card-summary" bordered={false}>
-            <Statistic
-              title={
-                <Text type="secondary" style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <Card className="premium-card metric-card-summary" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.8px", fontWeight: 600 }}>
                   This Month's Outflow
                 </Text>
-              }
-              value={metrics.currentMonthTotal}
-              precision={2}
-              formatter={(val) => (
-                <span className="heading-font" style={{ fontSize: 32, fontWeight: 700, color: "#059669" }}>
-                  {formatCurrency(val)}
-                </span>
-              )}
-              prefix={<CalendarOutlined style={{ color: "#10b981", fontSize: 24, marginRight: 8 }} />}
-            />
-            <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font" style={{ fontSize: 30, fontWeight: 700, color: "#10b981", display: "block" }}>
+                    {formatCurrency(metrics.currentMonthTotal)}
+                  </span>
+                </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(16, 185, 129, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CalendarOutlined style={{ color: "#10b981", fontSize: 20 }} />
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {metrics.percentChange >= 0 ? (
-                <Tag color="#fee2e2" style={{ color: "#ef4444", border: "none", fontWeight: 600 }}>
+                <Tag color="#fee2e2" style={{ color: "#ef4444", border: "none", fontWeight: 600, borderRadius: 12, padding: "2px 8px" }}>
                   <ArrowUpOutlined /> {metrics.percentChange.toFixed(1)}%
                 </Tag>
               ) : (
-                <Tag color="#d1fae5" style={{ color: "#10b981", border: "none", fontWeight: 600 }}>
+                <Tag color="#d1fae5" style={{ color: "#10b981", border: "none", fontWeight: 600, borderRadius: 12, padding: "2px 8px" }}>
                   <ArrowDownOutlined /> {Math.abs(metrics.percentChange).toFixed(1)}%
                 </Tag>
               )}
@@ -276,46 +290,52 @@ console.log("categoryList:", categoryList);
         </Col>
       </Row>
 
-      {/* Quick Actions Shortcuts */}
-      <Card className="premium-card" style={{ padding: "8px 12px" }}>
-        <Row gutter={[16, 16]} align="middle">
-          <Col xs={24} sm={6}>
-            <Title level={5} className="heading-font" style={{ margin: 0 }}>
-              Quick Actions
+      {/* Quick Actions Shortcuts Panel Dock */}
+      <Card className="premium-card" styles={{ body: { padding: "20px 24px" } }}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
+          <div>
+            <Title level={5} className="heading-font" style={{ margin: 0, fontSize: 16 }}>
+              Quick Workspace Shortcuts
             </Title>
-          </Col>
-          <Col xs={24} sm={18}>
-            <Space size="middle" wrap>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={() => navigate("/expenses?action=add")}
-              >
-                Log New Expense
-              </Button>
-              <Button
-                type="default"
-                icon={<LineChartOutlined />}
-                onClick={() => navigate("/analytics")}
-              >
-                View Analytics Reports
-              </Button>
-              <Button
-                className="ai-glow"
-                style={{
-                  background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-                  border: "none",
-                  color: "#ffffff",
-                  fontWeight: 600,
-                }}
-                icon={<RobotOutlined />}
-                onClick={() => navigate("/ai-assistant")}
-              >
-                Consult Assistant
-              </Button>
-            </Space>
-          </Col>
-        </Row>
+            <Text type="secondary" style={{ fontSize: 12 }}>
+              Launch typical logging operations or consult data projections immediately.
+            </Text>
+          </div>
+          <Space size="middle" wrap>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => navigate("/expenses?action=add")}
+              style={{ borderRadius: 8, height: 38 }}
+            >
+              Log New Expense
+            </Button>
+            <Button
+              type="default"
+              icon={<LineChartOutlined />}
+              onClick={() => navigate("/analytics")}
+              style={{ borderRadius: 8, height: 38, fontWeight: 500 }}
+              className="quick-action-btn"
+            >
+              View Analytics Reports
+            </Button>
+            <Button
+              className="ai-glow"
+              style={{
+                background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                border: "none",
+                color: "#ffffff",
+                fontWeight: 600,
+                borderRadius: 8,
+                height: 38
+              }}
+              icon={<RobotOutlined />}
+              onClick={() => navigate("/ai-assistant")}
+            >
+              Consult Assistant
+            </Button>
+          </Space>
+        </div>
       </Card>
 
       {/* Recent Ledger table */}
@@ -331,7 +351,7 @@ console.log("categoryList:", categoryList);
           </Button>
         }
         className="premium-card"
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
       >
         <Table
           dataSource={sortedExpenses}

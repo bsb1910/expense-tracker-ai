@@ -120,6 +120,7 @@ const MainLayout = ({ children }) => {
       >
         <Space size="middle">
           <div
+            className="quick-action-btn"
             style={{
               width: 32,
               height: 32,
@@ -129,7 +130,9 @@ const MainLayout = ({ children }) => {
               alignItems: "center",
               justifyContent: "center",
               boxShadow: "0 4px 10px rgba(79, 70, 229, 0.25)",
+              cursor: "pointer",
             }}
+            onClick={() => navigate("/")}
           >
             <span style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>₹</span>
           </div>
@@ -137,7 +140,8 @@ const MainLayout = ({ children }) => {
             <Title
               level={5}
               className="heading-font gradient-text"
-              style={{ margin: 0, letterSpacing: "-0.5px" }}
+              style={{ margin: 0, letterSpacing: "-0.5px", cursor: "pointer" }}
+              onClick={() => navigate("/")}
             >
               SmartExpense
             </Title>
@@ -164,7 +168,7 @@ const MainLayout = ({ children }) => {
             textAlign: "left",
           }}
         >
-          <Text type="secondary" style={{ fontSize: 11 }} block>
+          <Text type="secondary" style={{ fontSize: 11, display: "block" }}>
             AI Engine v1.0
           </Text>
           <Badge status="successful" color="#10b981" text="Cloud Sync Active" style={{ fontSize: 11 }} />
@@ -267,6 +271,7 @@ const MainLayout = ({ children }) => {
           <Space size="middle">
             <Button
               type="text"
+              className="quick-action-btn"
               icon={isDarkMode ? <SunOutlined style={{ color: "#fbbf24", fontSize: 18 }} /> : <MoonOutlined style={{ color: "#475569", fontSize: 18 }} />}
               onClick={toggleDarkMode}
               style={{
@@ -277,6 +282,8 @@ const MainLayout = ({ children }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 background: isDarkMode ? "rgba(251, 191, 36, 0.15)" : "#f1f5f9",
+                boxShadow: isDarkMode ? "0 2px 8px rgba(251, 191, 36, 0.1)" : "0 2px 8px rgba(148, 163, 184, 0.08)",
+                border: isDarkMode ? "1px solid rgba(251, 191, 36, 0.2)" : "1px solid #e2e8f0",
               }}
             />
             <Badge

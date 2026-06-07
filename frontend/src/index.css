@@ -15,12 +15,13 @@ body {
   background-color: #f8fafc; /* Light modern slate bg */
   color: #0f172a; /* Slate 900 */
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom Scrollbar for a premium feel */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -29,18 +30,22 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1; /* Slate 300 */
-  border-radius: 4px;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8; /* Slate 400 */
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 /* Keyframe Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -69,9 +74,31 @@ body {
   }
 }
 
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Page transitions and visual utility classes */
 .page-animate {
-  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .fade-in {
@@ -102,44 +129,67 @@ body {
 .premium-card {
   border-radius: 16px !important;
   border: 1px solid rgba(226, 232, 240, 0.8) !important; /* light slate border */
-  box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.08) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 24px -2px rgba(148, 163, 184, 0.06) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
   background: #ffffff !important;
 }
 
 .premium-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px -4px rgba(148, 163, 184, 0.16) !important;
-  border-color: rgba(79, 70, 229, 0.15) !important;
+  box-shadow: 0 16px 32px -4px rgba(148, 163, 184, 0.12) !important;
+  border-color: rgba(79, 70, 229, 0.18) !important;
+}
+
+/* Metric card specific lifts with colorful glows */
+.metric-card-total:hover {
+  border-color: rgba(79, 70, 229, 0.3) !important;
+  box-shadow: 0 16px 32px -4px rgba(79, 70, 229, 0.08), 0 0 0 1px rgba(79, 70, 229, 0.05) !important;
+}
+
+.metric-card-categories:hover {
+  border-color: rgba(6, 182, 212, 0.3) !important;
+  box-shadow: 0 16px 32px -4px rgba(6, 182, 212, 0.08), 0 0 0 1px rgba(6, 182, 212, 0.05) !important;
+}
+
+.metric-card-summary:hover {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 16px 32px -4px rgba(16, 185, 129, 0.08), 0 0 0 1px rgba(16, 185, 129, 0.05) !important;
 }
 
 /* Dashboard Metric Cards custom backgrounds */
 .metric-card-total {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(238, 242, 255, 0.9) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 255, 0.95) 100%) !important;
   border-left: 4px solid #4f46e5 !important;
 }
 
 .metric-card-categories {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(236, 254, 255, 0.9) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 255, 0.95) 100%) !important;
   border-left: 4px solid #06b6d4 !important;
 }
 
 .metric-card-summary {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 250, 0.9) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 244, 0.95) 100%) !important;
   border-left: 4px solid #10b981 !important;
 }
 
 /* AI Assistant glowing animation */
 .ai-glow {
-  animation: pulseBorder 2s infinite;
+  animation: pulseBorder 2.5s infinite;
 }
 
-/* Chat bubble styling */
+/* Chat Centered Workspace Layout */
+.chat-container-centered {
+  max-width: 880px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .chat-bubble-user {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
   color: #ffffff;
   border-radius: 18px 18px 2px 18px;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .chat-bubble-ai {
@@ -147,7 +197,43 @@ body {
   color: #1e293b;
   border-radius: 18px 18px 18px 2px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 10px rgba(148, 163, 184, 0.05);
+  box-shadow: 0 4px 14px rgba(148, 163, 184, 0.04);
+  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Modernized welcome screen grid widgets */
+.welcome-card-widget {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.welcome-card-widget:hover {
+  border-color: #4f46e5;
+  background: #f5f7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.06);
+}
+
+/* Chat Input Wrapper Pill shape */
+.chat-input-pill {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 6px 6px 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px -10px rgba(148, 163, 184, 0.12);
+  transition: all 0.25s ease;
+}
+
+.chat-input-pill:focus-within {
+  border-color: #4f46e5;
+  box-shadow: 0 10px 30px -8px rgba(79, 70, 229, 0.18), 0 0 0 2px rgba(79, 70, 229, 0.1);
 }
 
 /* Make Ant Design elements match the theme */
@@ -156,40 +242,56 @@ body {
 }
 
 .ant-menu-item {
-  border-radius: 8px !important;
-  margin: 4px 8px !important;
+  border-radius: 10px !important;
+  margin: 6px 12px !important;
   font-weight: 500;
-  transition: all 0.2s ease !important;
+  transition: all 0.25s ease !important;
+  height: 40px !important;
+  line-height: 40px !important;
 }
 
 .ant-menu-item-selected {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.2) !important;
 }
 
 .ant-table-thead > tr > th {
   background: #f1f5f9 !important; /* Slate 100 */
   font-weight: 600 !important;
   color: #475569 !important; /* Slate 600 */
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.ant-table-tbody > tr {
+  transition: background-color 0.2s ease;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f8fafc !important;
 }
 
 .ant-btn-primary {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
   border: none !important;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2) !important;
-  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-weight: 500 !important;
 }
 
 .ant-btn-primary:hover {
-  opacity: 0.9;
+  opacity: 0.95;
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.3) !important;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3) !important;
 }
 
-.ant-input:focus, .ant-input-focused, .ant-input-number:focus, .ant-select-selector:focus {
+.ant-input:focus, .ant-input-focused, .ant-input-number:focus, .ant-select-selector:focus, .ant-picker:focus, .ant-picker-focused {
   border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1) !important;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12) !important;
 }
 
 /* Responsive side nav and drawer tweaks */
@@ -200,12 +302,11 @@ body {
 
 /* Dashboard quick card actions */
 .quick-action-btn {
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 12px;
 }
 .quick-action-btn:hover {
-  background: #eff6ff !important;
-  transform: scale(1.05);
+  transform: translateY(-1px) scale(1.02);
 }
 
 /* Dark Mode styles */
@@ -218,27 +319,43 @@ body.dark {
 body.dark .premium-card {
   background: #1e293b !important; /* Slate 800 */
   border: 1px solid rgba(51, 65, 85, 0.8) !important; /* slate 700 border */
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.3) !important;
 }
 
 body.dark .premium-card:hover {
-  border-color: rgba(99, 102, 241, 0.3) !important; /* Indigo 500 */
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important; /* Indigo 500 glow */
+  box-shadow: 0 16px 32px -4px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Glowing card lifts in dark mode */
+body.dark .metric-card-total:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 16px 32px -4px rgba(99, 102, 241, 0.15) !important;
+}
+
+body.dark .metric-card-categories:hover {
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  box-shadow: 0 16px 32px -4px rgba(6, 182, 212, 0.15) !important;
+}
+
+body.dark .metric-card-summary:hover {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 16px 32px -4px rgba(16, 185, 129, 0.15) !important;
 }
 
 /* Dashboard Metric Cards custom backgrounds for dark mode */
 body.dark .metric-card-total {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%) !important;
   border-left: 4px solid #4f46e5 !important;
 }
 
 body.dark .metric-card-categories {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%) !important;
   border-left: 4px solid #06b6d4 !important;
 }
 
 body.dark .metric-card-summary {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%) !important;
   border-left: 4px solid #10b981 !important;
 }
 
@@ -247,7 +364,28 @@ body.dark .chat-bubble-ai {
   background: #1e293b;
   color: #f1f5f9;
   border: 1px solid #334155;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .welcome-card-widget {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark .welcome-card-widget:hover {
+  border-color: #6366f1;
+  background: #1e293bbf;
+}
+
+body.dark .chat-input-pill {
+  background: #1e293b;
+  border-color: #475569;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .chat-input-pill:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 10px 30px -8px rgba(99, 102, 241, 0.25), 0 0 0 2px rgba(99, 102, 241, 0.1);
 }
 
 /* Ant Design layout overrides for dark mode */
@@ -271,6 +409,10 @@ body.dark .ant-table-thead > tr > th {
 
 body.dark .ant-table-tbody > tr > td {
   border-bottom: 1px solid #334155 !important;
+}
+
+body.dark .ant-table-tbody > tr:hover > td {
+  background: #1e293b !important;
 }
 
 body.dark .mobile-sider-drawer .ant-drawer-body {
@@ -321,48 +463,58 @@ body.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 
-/* AI assistant formatting rules */
+/* AI assistant markdown formatting rules */
 .chat-bubble-ai h1,
 .chat-bubble-ai h2,
 .chat-bubble-ai h3,
 .chat-bubble-ai h4 {
   font-family: 'Space Grotesk', sans-serif !important;
-  margin-top: 16px;
+  margin-top: 18px;
   margin-bottom: 8px;
   color: inherit;
+  font-weight: 700;
 }
 
 .chat-bubble-ai h1 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.4rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.15);
   padding-bottom: 6px;
+  color: #4f46e5;
+}
+body.dark .chat-bubble-ai h1 {
+  color: #a5b4fc;
 }
 
 .chat-bubble-ai h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
 }
 
 .chat-bubble-ai h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .chat-bubble-ai p {
   margin-bottom: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .chat-bubble-ai ul,
 .chat-bubble-ai ol {
-  padding-left: 20px;
+  padding-left: 24px;
   margin-bottom: 12px;
 }
 
 .chat-bubble-ai li {
   margin-bottom: 6px;
-  line-height: 1.4;
+  line-height: 1.5;
+}
+
+.chat-bubble-ai li strong {
+  color: #4f46e5;
+  font-weight: 600;
+}
+body.dark .chat-bubble-ai li strong {
+  color: #818cf8;
 }
 
 .chat-bubble-ai hr {
@@ -374,4 +526,79 @@ body.dark ::-webkit-scrollbar-thumb:hover {
 .chat-bubble-ai strong {
   font-weight: 600;
   color: inherit;
+}
+
+/* Premium styled markdown tables inside AI Assistant responses */
+.chat-bubble-ai table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 16px 0;
+  font-size: 13px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 12px rgba(148, 163, 184, 0.03);
+}
+
+body.dark .chat-bubble-ai table {
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble-ai th,
+.chat-bubble-ai td {
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.chat-bubble-ai th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+body.dark .chat-bubble-ai th {
+  background-color: #1e293b;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+}
+
+.chat-bubble-ai td {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+body.dark .chat-bubble-ai td {
+  border-bottom: 1px solid #334155;
+}
+
+.chat-bubble-ai tr:last-child td {
+  border-bottom: none;
+}
+
+.chat-bubble-ai tr:nth-child(even) td {
+  background-color: #f8fafc;
+}
+
+body.dark .chat-bubble-ai tr:nth-child(even) td {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+/* Inline code in chat bubbles */
+.chat-bubble-ai code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+  background-color: #f1f5f9;
+  color: #e11d48;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+body.dark .chat-bubble-ai code {
+  background-color: #1e293b;
+  color: #f43f5e;
 }

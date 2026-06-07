@@ -32,9 +32,12 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   const [expenses, setExpenses] = useState([]);
   const [timeRange, setTimeRange] = useState("All");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     fetchExpenses();
+    const timer = setTimeout(() => setMounted(true), 350);
+    return () => clearTimeout(timer);
   }, []);
 
   const fetchExpenses = async () => {
@@ -127,18 +130,19 @@ const Analytics = () => {
         <Card
           size="small"
           style={{
-            background: "rgba(15, 23, 42, 0.95)",
-            border: "none",
-            borderRadius: 8,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            background: isDarkMode ? "rgba(30, 41, 59, 0.85)" : "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(8px)",
+            border: isDarkMode ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(148, 163, 184, 0.2)",
+            borderRadius: 10,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
           }}
-          bodyStyle={{ padding: "8px 12px" }}
+          styles={{ body: { padding: "10px 14px" } }}
         >
-          <Text style={{ color: "#f8fafc", fontWeight: 600, display: "block" }}>{data.name}</Text>
-          <Text style={{ color: "#06b6d4", fontWeight: 700, fontSize: 15 }}>
+          <Text style={{ color: isDarkMode ? "#f8fafc" : "#0f172a", fontWeight: 600, display: "block", fontSize: 13 }}>{data.name}</Text>
+          <Text style={{ color: "#06b6d4", fontWeight: 700, fontSize: 16, display: "block", marginTop: 2 }}>
             {formatCurrency(data.value)}
           </Text>
-          <Text style={{ color: "#94a3b8", display: "block", fontSize: 11, marginTop: 2 }}>
+          <Text style={{ color: "#94a3b8", display: "block", fontSize: 11, marginTop: 4, fontWeight: 500 }}>
             Share: {percentage}%
           </Text>
         </Card>
@@ -154,14 +158,15 @@ const Analytics = () => {
         <Card
           size="small"
           style={{
-            background: "rgba(15, 23, 42, 0.95)",
-            border: "none",
-            borderRadius: 8,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            background: isDarkMode ? "rgba(30, 41, 59, 0.85)" : "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(8px)",
+            border: isDarkMode ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(148, 163, 184, 0.2)",
+            borderRadius: 10,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
           }}
-          bodyStyle={{ padding: "8px 12px" }}
+          styles={{ body: { padding: "10px 14px" } }}
         >
-          <Text style={{ color: "#94a3b8", display: "block", fontSize: 11 }}>{data.payload.month}</Text>
+          <Text style={{ color: "#94a3b8", display: "block", fontSize: 11, fontWeight: 500, marginBottom: 2 }}>{data.payload.month}</Text>
           <Text style={{ color: "#4f46e5", fontWeight: 700, fontSize: 16 }}>
             {formatCurrency(data.value)}
           </Text>
@@ -178,15 +183,16 @@ const Analytics = () => {
         <Card
           size="small"
           style={{
-            background: "rgba(15, 23, 42, 0.95)",
-            border: "none",
-            borderRadius: 8,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            background: isDarkMode ? "rgba(30, 41, 59, 0.85)" : "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(8px)",
+            border: isDarkMode ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(148, 163, 184, 0.2)",
+            borderRadius: 10,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
           }}
-          bodyStyle={{ padding: "8px 12px" }}
+          styles={{ body: { padding: "10px 14px" } }}
         >
-          <Text style={{ color: "#f8fafc", fontWeight: 600, display: "block" }}>{data.payload.name}</Text>
-          <Text style={{ color: "#10b981", fontWeight: 700, fontSize: 15 }}>
+          <Text style={{ color: isDarkMode ? "#f8fafc" : "#0f172a", fontWeight: 600, display: "block", fontSize: 13 }}>{data.payload.name}</Text>
+          <Text style={{ color: "#10b981", fontWeight: 700, fontSize: 16, display: "block", marginTop: 2 }}>
             {formatCurrency(data.value)}
           </Text>
         </Card>
@@ -204,7 +210,7 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+      <Space orientation="vertical" size="large" style={{ width: "100%" }}>
         <Skeleton active paragraph={{ rows: 12 }} />
       </Space>
     );
@@ -222,7 +228,7 @@ const Analytics = () => {
             <Text type="secondary">Explore visual trends and patterns of your expenditures.</Text>
           </Col>
           <Col xs={24} sm={12} style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Space direction="vertical" size={2} style={{ width: "100%", maxWidth: 240 }}>
+            <Space orientation="vertical" size={2} style={{ width: "100%", maxWidth: 240 }}>
               <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.5px" }}>Time Interval</Text>
               <Select
                 value={timeRange}
@@ -242,54 +248,80 @@ const Analytics = () => {
 
       {/* KPI Cards section */}
       <Row gutter={[24, 24]}>
+        {/* Cumulative Outflow */}
         <Col xs={24} sm={8}>
-          <Card className="premium-card metric-card-total" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Cumulative Outflow</Text>
-                <div style={{ marginTop: 6 }}>
-                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+          <Card className="premium-card metric-card-total" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                  Cumulative Outflow
+                </Text>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font gradient-text" style={{ fontSize: 30, fontWeight: 700, display: "block" }}>
                     {formatCurrency(totalSpent)}
-                  </Title>
+                  </span>
                 </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(79, 70, 229, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <RiseOutlined style={{ color: "#4f46e5", fontSize: 20 }} />
               </div>
-              <div style={{ background: "rgba(79, 70, 229, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <RiseOutlined style={{ color: "#4f46e5", fontSize: 22 }} />
-              </div>
+            </div>
+            <div>
+              <Text type="secondary" style={{ fontSize: 12 }}>
+                Sum total across selected range
+              </Text>
             </div>
           </Card>
         </Col>
+
+        {/* Average per Entry */}
         <Col xs={24} sm={8}>
-          <Card className="premium-card metric-card-categories" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Average / Entry</Text>
-                <div style={{ marginTop: 6 }}>
-                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+          <Card className="premium-card metric-card-categories" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                  Average / Entry
+                </Text>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font" style={{ fontSize: 30, fontWeight: 700, color: "#0891b2", display: "block" }}>
                     {formatCurrency(averageSpent)}
-                  </Title>
+                  </span>
                 </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(6, 182, 212, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CalendarOutlined style={{ color: "#06b6d4", fontSize: 20 }} />
               </div>
-              <div style={{ background: "rgba(6, 182, 212, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <CalendarOutlined style={{ color: "#06b6d4", fontSize: 22 }} />
-              </div>
+            </div>
+            <div>
+              <Text type="secondary" style={{ fontSize: 12 }}>
+                Average ticket size of transactions
+              </Text>
             </div>
           </Card>
         </Col>
+
+        {/* Peak Transaction */}
         <Col xs={24} sm={8}>
-          <Card className="premium-card metric-card-summary" bordered={false} bodyStyle={{ padding: "18px 24px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Peak Transaction</Text>
-                <div style={{ marginTop: 6 }}>
-                  <Title level={3} className="heading-font" style={{ margin: 0, fontWeight: 700, color: isDarkMode ? "#ffffff" : "#1e293b" }}>
+          <Card className="premium-card metric-card-summary" variant="borderless" styles={{ body: { padding: "24px" } }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+              <Space orientation="vertical" size={2}>
+                <Text type="secondary" style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                  Peak Transaction
+                </Text>
+                <div style={{ marginTop: 4 }}>
+                  <span className="heading-font" style={{ fontSize: 30, fontWeight: 700, color: "#10b981", display: "block" }}>
                     {formatCurrency(maxExpense)}
-                  </Title>
+                  </span>
                 </div>
+              </Space>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(16, 185, 129, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <ThunderboltOutlined style={{ color: "#10b981", fontSize: 20 }} />
               </div>
-              <div style={{ background: "rgba(16, 185, 129, 0.12)", padding: 12, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <ThunderboltOutlined style={{ color: "#10b981", fontSize: 22 }} />
-              </div>
+            </div>
+            <div>
+              <Text type="secondary" style={{ fontSize: 12 }}>
+                Single largest ledger transaction
+              </Text>
             </div>
           </Card>
         </Col>
@@ -301,8 +333,9 @@ const Analytics = () => {
           <Empty description="Not enough expense records to plot visualizations. Try logging some transactions first!" />
         </Card>
       ) : (
-        <>
-          <Row gutter={[24, 24]}>
+        mounted && (
+          <>
+            <Row gutter={[24, 24]}>
             {/* Category distribution Pie/Donut Chart */}
             <Col xs={24} lg={10}>
               <Card
@@ -474,6 +507,7 @@ const Analytics = () => {
             </Col>
           </Row>
         </>
+        )
       )}
     </div>
   );
