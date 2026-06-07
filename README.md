@@ -6,7 +6,7 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 
 ---
 
-# 🚀 Project Highlights
+#  Project Highlights
 
 * Full-Stack MERN Application
 * AI-Powered Financial Assistant
@@ -23,7 +23,7 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 
 ---
 
-# 📷 Application Preview
+#  Application Preview
 
 | Dashboard                                | Analytics                                |
 | ---------------------------------------- | ---------------------------------------- |
@@ -39,7 +39,7 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 
 ---
 
-# 🏗️ System Architecture
+#  System Architecture
 
 ```text
 ┌───────────────────────────────────────────┐
@@ -64,7 +64,7 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 
 ---
 
-# 📸 Application Screenshots
+#  Application Screenshots
 
 ## Dashboard – Financial Overview
 
@@ -130,7 +130,7 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ---
 
-# ✨ Features
+#  Features
 
 ## Expense Management
 
@@ -184,7 +184,7 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ---
 
-# 🛠️ Technology Stack
+#  Technology Stack
 
 ## Frontend
 
@@ -219,7 +219,7 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ---
 
-# 🔌 Backend APIs
+#  Backend APIs
 
 ## Expense APIs
 
@@ -255,7 +255,7 @@ GET /api/health
 
 ---
 
-# 💼 Resume-Worthy Features
+#  Resume-Worthy Features
 
 ### Software Engineering
 
@@ -288,7 +288,7 @@ GET /api/health
 
 ---
 
-# 📊 Project Metrics
+#  Project Metrics
 
 ### Backend
 
@@ -314,7 +314,7 @@ GET /api/health
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```text
 expense-tracker-ai
@@ -357,7 +357,7 @@ expense-tracker-ai
 
 ---
 
-# ⚙️ Installation & Setup
+#  Installation & Setup
 
 ## Clone Repository
 
@@ -383,7 +383,7 @@ npm run dev
 
 ---
 
-# 🔐 Environment Variables
+#  Environment Variables
 
 Create a `.env` file inside the backend directory.
 
@@ -397,7 +397,7 @@ OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
 
 ---
 
-# 🔮 Future Enhancements
+#  Future Enhancements
 
 * User Authentication & Authorization
 * JWT Security
@@ -412,7 +412,7 @@ OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
 
 ---
 
-# 👨‍💻 Author
+#  Author
 
 **Bhagyesh Bhatt**
 
