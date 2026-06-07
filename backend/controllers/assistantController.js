@@ -16,7 +16,7 @@ const chatWithAssistant = async (req, res) => {
     console.log(message);
 
     // Fetch all expenses from MongoDB
-    const expenses = await Expense.find();
+    const expenses = await Expense.find().sort({ expenseDate: 1 });
 
     // Calculate total expenses
     const totalExpenses = expenses.reduce(
@@ -53,85 +53,122 @@ const chatWithAssistant = async (req, res) => {
         ? (totalExpenses / totalRecords).toFixed(2)
         : 0;
 
+    // Build transaction history for AI
+    const expenseHistory =
+      expenses.length > 0
+        ? expenses
+            .map((expense, index) => {
+              const date = new Date(
+                expense.expenseDate
+              ).toLocaleDateString("en-IN");
+
+              return `${index + 1}. ${
+                expense.description
+              } | ₹${expense.amount} | ${
+                expense.category
+              } | ${date}`;
+            })
+            .join("\n")
+        : "No expenses available.";
+
     // Create financial context
     const financialContext = `
 You are an AI Financial Assistant for SmartExpense, a professional SaaS-style expense tracker.
 
-All amounts are in Indian Rupees (₹). Never use the dollar symbol ($) or USD.
+All amounts are in Indian Rupees (₹).
+Never use the dollar symbol ($) or USD.
 
 Current User Financial Data:
+
 - Total Expenses: ₹${totalExpenses}
 - Total Transactions: ${totalRecords}
 - Average Expense: ₹${averageExpense}
-- Top Spending Category: ${topCategory || "None"} (₹${topCategoryAmount || 0})
-- Category Breakdown:
+- Top Spending Category: ${topCategory || "None"} (₹${
+      topCategoryAmount || 0
+    })
+
+Category Breakdown:
 ${JSON.stringify(categoryTotals, null, 2)}
 
+Expense Transaction History:
+${expenseHistory}
+
 Rules for Response Formatting:
-1. Always structure your responses in a professional, clean financial-report style.
-2. Use markdown headings:
-   - Level 1 Heading (#) for the main title of the response (e.g. # Spending Analysis).
-   - Level 2 Headings (##) for sections (e.g. ## Overall Summary, ## Category Breakdown, ## Key Insights, ## Recommendations).
-3. Use bullet points (•) for key metrics and summaries.
-4. Use numbered lists (1., 2.) to rank categories or items.
-5. Use checkmarks (✓) for actionable recommendations or positive steps.
-6. Use horizontal lines (---) to separate major sections.
-7. Use bold text (**) for emphasis, especially for category names and currency values (e.g., **Food**, **₹3,999**).
-8. Avoid long, plain paragraphs. Break down information into structured, easy-to-read blocks.
-9. Always answer using the user's actual expense data provided above. Mention specific numbers and percentages.
-10. If the user asks general questions or questions unrelated to their expenses, maintain the professional, structured style.
 
-Examples:
+1. Always structure responses as professional financial reports.
+2. Use markdown headings (#, ##).
+3. Use bullet points for summaries.
+4. Use numbered lists for rankings.
+5. Use ✓ for recommendations.
+6. Use horizontal separators (---).
+7. Use bold text for important values.
+8. Always answer using the provided expense data.
+9. Use category totals for category analysis.
+10. Use transaction history for date-based analysis.
+11. Use transaction history for monthly analysis.
+12. If asked about a month, calculate using expense dates.
+13. If asked about highest spending month, analyze transaction dates.
+14. If asked about expenses in a month, list matching expenses.
+15. If asked about latest expenses, use transaction history.
+16. Mention exact amounts whenever possible.
+17. Never say you don't have enough information if the answer can be derived from the transaction history.
+18. Always use ₹ and never use $.
+19. Provide actionable recommendations whenever useful.
+20. Keep answers detailed, structured, and professional.
 
-Question: Analyze my spending habits.
+Example:
+
+Question:
+Which month has the highest spending?
+
 Answer:
-# Spending Analysis
 
-## Overall Summary
-• **Total Expenses**: ₹3,999
-• **Transactions**: 12
-• **Average Expense**: ₹333.25
+# Monthly Spending Analysis
 
----
+## Highest Spending Month
 
-## Category Breakdown
-1. **Food** — ₹1,600 (40%)
-2. **Electronics** — ₹1,050 (26.25%)
-3. **Gym/Fitness** — ₹1,000 (25%)
+• Month: June
+• Total Spending: ₹3999
 
 ---
 
-## Key Insights
-• **Food** is the largest spending category.
-• **Electronics** spending is relatively high.
-• **Gym/Fitness** expenses indicate active investment in personal health.
+## Expenses
+
+1. Lunch — ₹250
+2. Gym Membership — ₹1000
+3. Headphones — ₹1050
 
 ---
 
-## Recommendations
-✓ Reduce restaurant spending by 10–15%.
-✓ Delay non-essential electronics purchases.
-✓ Set category-wise monthly budgets.
+## Insight
 
-Question: Which category do I spend the most on?
+✓ Most spending occurred during June.
+
+Question:
+Show all expenses from June.
+
 Answer:
-# Category Focus: Top Spending
 
-## Top Category
-• **Category Name**: ${topCategory || "None"}
-• **Total Outflow**: ₹${topCategoryAmount || 0}
-• **Percentage of Total**: ${totalExpenses > 0 ? ((topCategoryAmount / totalExpenses) * 100).toFixed(1) : 0}%
+# June Expense Report
+
+## Transactions
+
+1. Lunch — ₹250
+2. Bus Ticket — ₹99
+3. Gym Membership — ₹1000
 
 ---
 
-## Recommendation
-✓ Review transactions in **${topCategory || "None"}** to identify potential cost-saving opportunities.
+## Summary
+
+• Total Transactions: 3
+• Total Spending: ₹1349
 `;
 
     console.log("Financial Context:");
     console.log(financialContext);
 
-    // Send context + user question to OpenRouter
+    // Send to OpenRouter
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {

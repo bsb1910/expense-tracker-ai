@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, Input, Button, Avatar, Space, Typography, Tag } from "antd";
-import { SendOutlined, RobotOutlined, UserOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  SendOutlined,
+  RobotOutlined,
+  UserOutlined,
+  QuestionCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { marked } from "marked";
 import {
   expenseService,
@@ -26,14 +32,27 @@ const parseMarkdown = (text) => {
 const AIAssistant = () => {
   const [expenses, setExpenses] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: "welcome",
-      sender: "ai",
-      text: "Hello! I am your Smart Expense Assistant. I've analyzed your transaction ledger. Ask me any question about your spending, or click one of the suggested prompts below!",
-      time: new Date(),
-    },
-  ]);
+  const defaultMessage = [
+  {
+    id: "welcome",
+    sender: "ai",
+    text: "Hello! I am your Smart Expense Assistant. I've analyzed your transaction ledger. Ask me any question about your spending, or click one of the suggested prompts below!",
+    time: new Date(),
+  },
+];
+
+const [messages, setMessages] = useState(() => {
+  const saved = localStorage.getItem("smartexpense_chat");
+
+  if (saved) {
+    return JSON.parse(saved).map((msg) => ({
+      ...msg,
+      time: new Date(msg.time),
+    }));
+  }
+
+  return defaultMessage;
+});
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -49,10 +68,12 @@ const AIAssistant = () => {
     fetchExpenses();
   }, []);
 
-  // Scroll to bottom of chat when messages change
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, typing]);
+  localStorage.setItem(
+    "smartexpense_chat",
+    JSON.stringify(messages)
+  );
+}, [messages]);
 
   const fetchExpenses = async () => {
     try {
@@ -114,30 +135,47 @@ const AIAssistant = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 180px)", minHeight: 480 }}>
       {/* Header Info Banner */}
-      <Card
-        className="premium-card"
-        bodyStyle={{ padding: "12px 24px" }}
-        style={{ marginBottom: 16 }}
-      >
-        <Space size="middle">
-          <Avatar
-            style={{
-              background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-              boxShadow: "0 2px 8px rgba(236, 72, 153, 0.3)",
-            }}
-            icon={<RobotOutlined />}
-            size="large"
-          />
-          <div>
-            <Title level={5} className="heading-font" style={{ margin: 0 }}>
-              SmartExpense Analyst
-            </Title>
-            <Text type="secondary" style={{ fontSize: 12 }}>
-              Ask questions about your transactions using natural language commands.
-            </Text>
-          </div>
-        </Space>
-      </Card>
+      <Space
+  size="middle"
+  style={{
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+  }}
+>
+  <Space size="middle">
+    <Avatar
+      style={{
+        background:
+          "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+        boxShadow: "0 2px 8px rgba(236, 72, 153, 0.3)",
+      }}
+      icon={<RobotOutlined />}
+      size="large"
+    />
+
+    <div>
+      <Title level={5} className="heading-font" style={{ margin: 0 }}>
+        SmartExpense Analyst
+      </Title>
+
+      <Text type="secondary" style={{ fontSize: 12 }}>
+        Ask questions about your transactions using natural language commands.
+      </Text>
+    </div>
+  </Space>
+
+  <Button
+    danger
+    icon={<DeleteOutlined />}
+    onClick={() => {
+      localStorage.removeItem("smartexpense_chat");
+      window.location.reload();
+    }}
+  >
+    Clear Chat
+  </Button>
+</Space>
 
       {/* Main Chat Area */}
       <Card
