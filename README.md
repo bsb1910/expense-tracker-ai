@@ -483,3 +483,254 @@ B.Tech Computer Science Engineering
 AI Engineering Internship Project
 
 June 2026
+
+
+# 📷 Application Preview
+
+> Quick visual overview of SmartExpense
+
+| Dashboard                                | Analytics                                |
+| ---------------------------------------- | ---------------------------------------- |
+| ![](./project-screenshots/dashboard.png) | ![](./project-screenshots/analytics.png) |
+
+| Categories                                | Expense Ledger                                |
+| ----------------------------------------- | --------------------------------------------- |
+| ![](./project-screenshots/categories.png) | ![](./project-screenshots/expense-ledger.png) |
+
+| AI Assistant                                     | AI Insights                                          |
+| ------------------------------------------------ | ---------------------------------------------------- |
+| ![](./project-screenshots/ai-assistant-home.png) | ![](./project-screenshots/ai-assistant-insights.png) |
+
+---
+
+# 🏗️ System Architecture
+
+```text
+┌───────────────────────────────────────────┐
+│                 Frontend                  │
+│      React + Vite + Ant Design UI         │
+└───────────────────┬───────────────────────┘
+                    │
+                    │ REST API Requests
+                    ▼
+┌───────────────────────────────────────────┐
+│                 Backend                   │
+│         Node.js + Express.js APIs         │
+└───────────────┬───────────────┬───────────┘
+                │               │
+                ▼               ▼
+
+       MongoDB Atlas      OpenRouter AI
+
+       Expense Data       Financial Assistant
+       Analytics Data     Insights Engine
+```
+
+---
+
+# 📸 Application Screenshots
+
+## Dashboard – Financial Overview
+
+![Dashboard](./project-screenshots/dashboard.png)
+
+Provides a centralized overview of total spending, category insights, KPI metrics, recent transactions, and quick actions.
+
+---
+
+## Expense Ledger Management
+
+![Expense Ledger](./project-screenshots/expense-ledger.png)
+
+Manage expenses with CRUD operations, category assignment, filtering, search functionality, and pagination support.
+
+---
+
+## Category Management System
+
+![Categories](./project-screenshots/categories.png)
+
+Track spending distribution across categories and monitor category-wise budget allocation percentages.
+
+---
+
+## Spending Analytics Dashboard
+
+![Analytics](./project-screenshots/analytics.png)
+
+Interactive analytics powered by Recharts, including category comparison charts, KPI cards, spending trends, and financial insights.
+
+---
+
+## AI Assistant Welcome Interface
+
+![AI Assistant Home](./project-screenshots/ai-assistant-home.png)
+
+Modern ChatGPT-style financial assistant interface with quick analysis prompts and personalized assistance.
+
+---
+
+## AI Assistant Interactive Conversation
+
+![AI Assistant Chat](./project-screenshots/ai-assistant-chat.png)
+
+Expense-aware conversational AI capable of answering financial questions using real user expense data.
+
+---
+
+## AI Generated Financial Summary
+
+![AI Summary](./project-screenshots/ai-assistant-summary.png)
+
+Automatically generated spending reports including category analysis, financial health summaries, and recommendations.
+
+---
+
+## AI Insights & Recommendations
+
+![AI Insights](./project-screenshots/ai-assistant-insights.png)
+
+AI-powered recommendations, savings opportunities, budget suggestions, and financial improvement strategies.
+
+---
+
+# 💼 Resume-Worthy Features
+
+### Software Engineering
+
+* Designed and developed a full-stack MERN application.
+* Built scalable REST APIs using Express.js.
+* Integrated MongoDB Atlas cloud database.
+* Implemented reusable React component architecture.
+* Applied modular backend design principles.
+
+### Artificial Intelligence
+
+* Integrated OpenRouter LLM APIs.
+* Developed an expense-aware AI financial assistant.
+* Engineered prompts for contextual financial analysis.
+* Generated personalized financial reports and recommendations.
+
+### Data Analytics
+
+* Built financial KPI dashboards.
+* Developed category-wise analytics pipelines.
+* Implemented data visualization using Recharts.
+* Generated spending summaries and trend analysis.
+
+### UI/UX Engineering
+
+* Modern SaaS-inspired dashboard design.
+* Responsive layout architecture.
+* Dark Mode implementation.
+* Interactive chart visualizations.
+* ChatGPT-style AI interface.
+
+---
+
+# 📊 Project Metrics
+
+### Backend
+
+* 10+ REST APIs
+* MongoDB Atlas Integration
+* AI Service Layer
+* Analytics Engine
+
+### Frontend
+
+* 5 Major Application Pages
+* 20+ Reusable Components
+* Responsive UI Design
+* Theme Persistence System
+
+### AI Features
+
+* Financial Summary Generation
+* Category Analysis
+* Savings Recommendations
+* Monthly Reports
+* Conversational Financial Assistant
+
+---
+
+# 📂 Updated Project Structure
+
+```text
+expense-tracker-ai
+│
+├── backend
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── utils
+│   ├── server.js
+│   └── package.json
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── utils
+│   │   ├── App.jsx
+│   │   └── index.css
+│   │
+│   └── package.json
+│
+├── project-screenshots
+│   ├── dashboard.png
+│   ├── expense-ledger.png
+│   ├── categories.png
+│   ├── analytics.png
+│   ├── ai-assistant-home.png
+│   ├── ai-assistant-chat.png
+│   ├── ai-assistant-summary.png
+│   └── ai-assistant-insights.png
+│
+├── README.md
+└── .gitignore
+```
+
+---
+
+# ⚙️ Installation & Setup
+
+## Clone Repository
+
+```bash
+git clone https://github.com/bsb1910/expense-tracker-ai.git
+```
+
+## Backend Setup
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+# 🔐 Environment Variables
+
+Create a `.env` file inside the backend directory.
+
+```env
+PORT=5000
+
+MONGO_URI=YOUR_MONGODB_ATLAS_CONNECTION_STRING
+
+OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
+```
