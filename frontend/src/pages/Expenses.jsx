@@ -319,7 +319,7 @@ const Expenses = () => {
             {editingExpense ? "Edit Expense Log" : "Log New Expense"}
           </span>
         }
-        style={{ width: isMobileDrawer() ? "100%" : 480 }}
+        width={isMobileDrawer() ? "100%" : 480}
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
         styles={{ body: { paddingBottom: 80 } }}
