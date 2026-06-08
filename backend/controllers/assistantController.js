@@ -14,7 +14,41 @@ const chatWithAssistant = async (req, res) => {
 
     console.log("User Question:");
     console.log(message);
+    
+    const userMessage = message.toLowerCase();
 
+const blockedTopics = [
+  "cricket",
+  "football",
+  "ipl",
+  "movie",
+  "movies",
+  "actor",
+  "python",
+  "java",
+  "javascript",
+  "coding",
+  "programming",
+  "history",
+  "science",
+  "physics",
+  "chemistry",
+  "politics",
+  "election",
+  "weather"
+];
+
+const isBlocked = blockedTopics.some((topic) =>
+  userMessage.includes(topic)
+);
+
+if (isBlocked) {
+  return res.status(200).json({
+    success: true,
+    reply:
+      "I can only answer questions based on your expense records available in SmartExpense.",
+  });
+}
     // Fetch all expenses from MongoDB
     const expenses = await Expense.find().sort({ expenseDate: 1 });
 
@@ -115,7 +149,17 @@ Rules for Response Formatting:
 18. Always use ₹ and never use $.
 19. Provide actionable recommendations whenever useful.
 20. Keep answers detailed, structured, and professional.
+21. You are NOT a general-purpose chatbot.
 
+22. You can answer ONLY using the expense records, transaction history, category totals, analytics, and financial information provided in this context.
+
+23. If the answer cannot be directly derived from the provided expense data, respond ONLY with:
+
+"I can only answer questions based on your expense records available in SmartExpense."
+
+24. Do not answer general knowledge, sports, movies, coding, science, politics, history, weather, or any topic outside the provided expense data.
+
+25. When rejecting a question, provide no additional explanation, analysis, recommendations, or summaries.
 Example:
 
 Question:
