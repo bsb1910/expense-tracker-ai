@@ -17,38 +17,60 @@ const chatWithAssistant = async (req, res) => {
     
     const userMessage = message.toLowerCase();
 
-const blockedTopics = [
-  "cricket",
-  "football",
-  "ipl",
-  "movie",
-  "movies",
-  "actor",
-  "python",
-  "java",
-  "javascript",
-  "coding",
-  "programming",
-  "history",
-  "science",
-  "physics",
-  "chemistry",
-  "politics",
-  "election",
-  "weather"
+    const financeKeywords = [
+  "expense",
+  "expenses",
+  "spending",
+  "spent",
+  "transaction",
+  "transactions",
+  "report",
+  "budget",
+  "finance",
+  "financial",
+  "saving",
+  "savings",
+  "category",
+  "categories",
+  "analytics",
+  "analysis",
+  "income",
+  "food",
+  "rent",
+  "transport",
+  "investment",
+  "healthcare",
+  "entertainment",
+  "monthly",
+  "daily",
+  "weekly",
+  "highest",
+  "lowest",
+  "average",
+  "summary",
+  "latest",
+  "month",
+  "year",
+  "today",
+  "yesterday",
+  "recommendation",
+  "recommendations",
+  "insight",
+  "insights"    
 ];
 
-const isBlocked = blockedTopics.some((topic) =>
-  userMessage.includes(topic)
+const isFinanceQuery = financeKeywords.some((keyword) =>
+  userMessage.includes(keyword)
 );
 
-if (isBlocked) {
+if (!isFinanceQuery) {
   return res.status(200).json({
     success: true,
     reply:
       "I can only answer questions based on your expense records available in SmartExpense.",
   });
 }
+
     // Fetch all expenses from MongoDB
     const expenses = await Expense.find().sort({ expenseDate: 1 });
 
