@@ -2,11 +2,13 @@ import axios from "axios";
 
 // Create Axios instance
 const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
   },
-});
+});;
 
 // ==========================================
 // EXPENSE API SERVICE
