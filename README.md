@@ -1,17 +1,38 @@
 # AI-Powered Expense Tracker with Smart Financial Assistant
 
-A modern full-stack MERN application that combines expense management, financial analytics, and AI-powered financial insights into a single platform.
+A production-ready full-stack MERN application that combines expense management, financial analytics, and AI-powered financial insights into a single platform.
 
-Built during an AI Engineering Internship (June 2026), SmartExpense helps users track expenses, analyze spending habits, visualize financial trends, and receive personalized recommendations from an AI financial assistant.
+SmartExpense helps users track expenses, analyze spending habits, visualize financial trends, and receive personalized recommendations from an AI-powered financial assistant.
 
 ---
 
-#  Project Highlights
+# Live Demo
+
+### Frontend (Vercel)
+
+https://expense-tracker-ai-blond-tau.vercel.app/
+
+### Backend API (Render)
+
+https://expense-tracker-ai-2kwz.onrender.com
+
+### Database
+
+MongoDB Atlas (Cloud Hosted)
+
+### AI Model
+
+DeepSeek V3 via OpenRouter
+
+---
+
+# Project Highlights
 
 * Full-Stack MERN Application
 * AI-Powered Financial Assistant
+* DeepSeek V3 Integration via OpenRouter
 * MongoDB Atlas Cloud Database
-* OpenRouter LLM Integration
+* Cloud Deployment using Vercel & Render
 * Expense Analytics Dashboard
 * Interactive Pie & Bar Charts
 * Category-Based Budget Tracking
@@ -20,10 +41,26 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 * Responsive SaaS-Style UI
 * RESTful API Architecture
 * Financial Reports & Recommendations
+* Environment-Based Configuration
+* Automated GitHub Deployment Workflow
 
 ---
 
-#  Application Preview
+# Key Achievements
+
+* Developed and deployed a full-stack MERN application.
+* Integrated DeepSeek V3 AI through OpenRouter.
+* Built 10+ REST APIs using Express.js.
+* Connected MongoDB Atlas cloud database.
+* Designed interactive financial analytics dashboards.
+* Implemented AI-powered expense analysis and recommendations.
+* Deployed frontend on Vercel and backend on Render.
+* Configured secure environment variables for production.
+* Achieved successful cloud deployment architecture.
+
+---
+
+# Application Preview
 
 | Dashboard                                | Analytics                                |
 | ---------------------------------------- | ---------------------------------------- |
@@ -39,32 +76,32 @@ Built during an AI Engineering Internship (June 2026), SmartExpense helps users 
 
 ---
 
-#  System Architecture
+# System Architecture
 
 ```text
-┌───────────────────────────────────────────┐
-│                 Frontend                  │
-│      React + Vite + Ant Design UI         │
-└───────────────────┬───────────────────────┘
-                    │
-                    │ REST API Requests
-                    ▼
-┌───────────────────────────────────────────┐
-│                 Backend                   │
-│         Node.js + Express.js APIs         │
-└───────────────┬───────────────┬───────────┘
-                │               │
-                ▼               ▼
+┌──────────────────────────────────────────────┐
+│             Vercel Frontend                  │
+│       React + Vite + Ant Design UI           │
+└──────────────────────┬───────────────────────┘
+                       │
+                       │ HTTPS API Requests
+                       ▼
+┌──────────────────────────────────────────────┐
+│             Render Backend                   │
+│          Node.js + Express APIs              │
+└───────────────┬───────────────────┬──────────┘
+                │                   │
+                ▼                   ▼
 
-       MongoDB Atlas      OpenRouter AI
+        MongoDB Atlas       OpenRouter + DeepSeek V3
 
-       Expense Data       Financial Assistant
-       Analytics Data     Insights Engine
+        Expense Data        Financial Analysis Engine
+        Analytics Data      AI Recommendations
 ```
 
 ---
 
-#  Application Screenshots
+# Application Screenshots
 
 ## Dashboard – Financial Overview
 
@@ -126,11 +163,11 @@ Automatically generated spending reports and category breakdowns.
 
 ![AI Insights](./project-screenshots/ai-assistant-insights.png)
 
-AI-powered savings recommendations, financial health analysis, and budgeting suggestions.
+AI-powered savings recommendations, financial health analysis, budgeting suggestions, and expense optimization strategies.
 
 ---
 
-#  Features
+# Features
 
 ## Expense Management
 
@@ -163,14 +200,17 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ## AI Financial Assistant
 
-* OpenRouter LLM Integration
+* DeepSeek V3 Integration
+* OpenRouter API Integration
 * Expense-Aware Responses
 * Spending Pattern Analysis
 * Savings Recommendations
 * Financial Health Reports
 * Monthly Expense Reports
+* Financial Health Scoring
 * Budget Suggestions
 * Personalized Financial Insights
+* Professional Financial Report Generation
 
 ## User Experience
 
@@ -184,7 +224,7 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ---
 
-#  Technology Stack
+# Technology Stack
 
 ## Frontend
 
@@ -194,7 +234,7 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 * Axios
 * React Router
 * Recharts
-* Marked (Markdown Rendering)
+* Marked
 
 ## Backend
 
@@ -205,21 +245,57 @@ AI-powered savings recommendations, financial health analysis, and budgeting sug
 
 ## AI & Analytics
 
+* DeepSeek V3
 * OpenRouter API
 * Prompt Engineering
 * Financial Analytics Engine
 * Expense Context Injection
 
+## Cloud & DevOps
+
+* Vercel
+* Render
+* MongoDB Atlas
+* GitHub
+* Environment Variables
+
 ## Development Tools
 
+* VS Code
 * Git
 * GitHub
-* VS Code
 * Postman
 
 ---
 
-#  Backend APIs
+# Deployment
+
+## Frontend
+
+* Hosted on Vercel
+* Automatic deployments from GitHub
+* Production environment variable configuration
+
+## Backend
+
+* Hosted on Render
+* Automatic deployments from GitHub
+* Secure API key management
+
+## Database
+
+* MongoDB Atlas Cloud Database
+
+## AI Infrastructure
+
+* OpenRouter API
+* DeepSeek V3 Model
+* Expense Context Injection
+* Financial Analyst Prompt Engineering
+
+---
+
+# Backend APIs
 
 ## Expense APIs
 
@@ -240,10 +316,6 @@ GET /api/expenses/category-summary
 ## AI APIs
 
 ```http
-GET  /api/ai/summary
-GET  /api/ai/category-analysis
-GET  /api/ai/recommendations
-GET  /api/ai/monthly-report
 POST /api/assistant/chat
 ```
 
@@ -255,9 +327,9 @@ GET /api/health
 
 ---
 
-#  Resume-Worthy Features
+# Resume-Worthy Features
 
-### Software Engineering
+## Software Engineering
 
 * Developed a full-stack MERN application.
 * Built scalable REST APIs using Express.js.
@@ -265,21 +337,29 @@ GET /api/health
 * Applied modular backend architecture.
 * Implemented reusable React components.
 
-### Artificial Intelligence
+## Artificial Intelligence
 
-* Integrated OpenRouter LLM APIs.
+* Integrated DeepSeek V3 via OpenRouter.
 * Built an expense-aware financial assistant.
 * Engineered prompts for contextual financial analysis.
 * Generated personalized financial reports and recommendations.
 
-### Data Analytics
+## Data Analytics
 
 * Developed financial KPI dashboards.
 * Implemented category-wise analytics pipelines.
 * Created interactive data visualizations.
 * Generated spending trend reports and insights.
 
-### UI/UX Engineering
+## Cloud & DevOps
+
+* Deployed frontend using Vercel.
+* Deployed backend using Render.
+* Configured MongoDB Atlas cloud database.
+* Managed production environment variables.
+* Built cloud-hosted full-stack architecture.
+
+## UI/UX Engineering
 
 * Designed a modern SaaS-inspired interface.
 * Implemented Dark Mode and theme persistence.
@@ -288,33 +368,33 @@ GET /api/health
 
 ---
 
-#  Project Metrics
+# Project Metrics
 
-### Backend
+## Backend
 
 * 10+ REST APIs
 * MongoDB Atlas Integration
 * Analytics Engine
 * AI Service Layer
 
-### Frontend
+## Frontend
 
 * 5 Major Application Pages
 * 20+ Reusable Components
 * Responsive UI Design
 * Theme Persistence System
 
-### AI Features
+## AI Features
 
 * Financial Summary Generation
 * Category Analysis
 * Savings Recommendations
-* Monthly Reports
+* Financial Health Reports
 * Conversational Financial Assistant
 
 ---
 
-#  Project Structure
+# Project Structure
 
 ```text
 expense-tracker-ai
@@ -342,14 +422,6 @@ expense-tracker-ai
 │   └── package.json
 │
 ├── project-screenshots
-│   ├── dashboard.png
-│   ├── expense-ledger.png
-│   ├── categories.png
-│   ├── analytics.png
-│   ├── ai-assistant-home.png
-│   ├── ai-assistant-chat.png
-│   ├── ai-assistant-summary.png
-│   └── ai-assistant-insights.png
 │
 ├── README.md
 └── .gitignore
@@ -357,7 +429,7 @@ expense-tracker-ai
 
 ---
 
-#  Installation & Setup
+# Installation & Setup
 
 ## Clone Repository
 
@@ -370,7 +442,7 @@ git clone https://github.com/bsb1910/expense-tracker-ai.git
 ```bash
 cd backend
 npm install
-npm run dev
+npm start
 ```
 
 ## Frontend Setup
@@ -383,7 +455,7 @@ npm run dev
 
 ---
 
-#  Environment Variables
+# Environment Variables
 
 Create a `.env` file inside the backend directory.
 
@@ -393,26 +465,28 @@ PORT=5000
 MONGO_URI=YOUR_MONGODB_ATLAS_CONNECTION_STRING
 
 OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
+
+OPENROUTER_MODEL=deepseek/deepseek-chat-v3-0324
 ```
 
 ---
 
-#  Future Enhancements
+# Future Enhancements
 
 * User Authentication & Authorization
 * JWT Security
+* Multi-User Expense Isolation
+* Persistent AI Conversation History
 * PDF Financial Report Generation
 * Expense Forecasting using AI
 * Budget Planning Assistant
 * RAG-Based Financial Knowledge Base
-* Multi-User Support
-* Cloud Deployment (Render/Vercel)
 * Docker Containerization
-* CI/CD Pipeline
+* CI/CD Pipeline Enhancements
 
 ---
 
-#  Author
+# Author
 
 **Bhagyesh Bhatt**
 
@@ -422,4 +496,4 @@ GitHub: https://github.com/bsb1910
 
 Project: AI-Powered Expense Tracker with Smart Financial Assistant
 
-June 2026
+2025–2026
