@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Statistic, Table, Tag, Space, Button, Alert, Skeleton, Typography } from "antd";
+import { useState, useEffect, useCallback } from "react";
+import { Row, Col, Card, Table, Tag, Space, Button, Alert, Skeleton, Typography } from "antd";
 import {
   DollarCircleOutlined,
   TagsOutlined,
@@ -31,45 +31,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-  try {
-    setLoading(true);
-    setError(null);
-
-   const [expenseRes, statsRes, categoryList] = await Promise.all([
-  expenseService.getExpenses(),
-  expenseService.getStats(),
-  categoryService.getCategories(),
-]);
-
-
-
-    const fetchedExpenses = expenseRes.data || [];
-
-    setExpenses(fetchedExpenses);
-    setCategoriesCount(categoryList.length);
-
-    // Store backend stats
-    setStats(statsRes.data);
-
-    // Existing dashboard calculations
-    computeStats(fetchedExpenses);
-  } catch (err) {
-    console.error("Dashboard loading error:", err);
-
-    setError(
-      "Failed to load dashboard metrics. Please check if backend server is running."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const computeStats = (items) => {
+  const computeStats = useCallback((items) => {
     const total = items.reduce((acc, curr) => acc + curr.amount, 0);
 
     const now = new Date();
@@ -109,7 +71,43 @@ const Dashboard = () => {
       prevMonthTotal,
       percentChange,
     });
-  };
+  }, []);
+
+  const fetchDashboardData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const [expenseRes, statsRes, categoryList] = await Promise.all([
+        expenseService.getExpenses(),
+        expenseService.getStats(),
+        categoryService.getCategories(),
+      ]);
+
+      const fetchedExpenses = expenseRes.data || [];
+
+      setExpenses(fetchedExpenses);
+      setCategoriesCount(categoryList.length);
+
+      // Store backend stats
+      setStats(statsRes.data);
+
+      // Existing dashboard calculations
+      computeStats(fetchedExpenses);
+    } catch (err) {
+      console.error("Dashboard loading error:", err);
+
+      setError(
+        "Failed to load dashboard metrics. Please check if backend server is running."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [computeStats]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   // Recent 5 expenses table setup
   const sortedExpenses = [...expenses]
@@ -260,7 +258,7 @@ const Dashboard = () => {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
               <Space orientation="vertical" size={2}>
                 <Text type="secondary" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.8px", fontWeight: 600 }}>
-                  This Month's Outflow
+                  {"This Month's Outflow"}
                 </Text>
                 <div style={{ marginTop: 4 }}>
                   <span className="heading-font" style={{ fontSize: 30, fontWeight: 700, color: "#10b981", display: "block" }}>

@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");

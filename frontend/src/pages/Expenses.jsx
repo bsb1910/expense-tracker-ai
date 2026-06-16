@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Table,
   Button,
@@ -11,12 +11,12 @@ import {
   Form,
   InputNumber,
   DatePicker,
-  Tag,
   Typography,
   message,
   Tooltip,
   Row,
   Col,
+  App,
 } from "antd";
 import {
   PlusOutlined,
@@ -30,10 +30,11 @@ import { formatCurrency, formatDate, getCategoryStyles } from "../utils/helpers"
 import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { TextArea } = Input;
 
 const Expenses = () => {
+  const { message } = App.useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -53,6 +54,15 @@ const Expenses = () => {
     fetchExpensesAndCategories();
   }, []);
 
+  const handleAddClick = useCallback(() => {
+    setEditingExpense(null);
+    setDrawerVisible(true);
+    setTimeout(() => {
+      form.resetFields();
+      form.setFieldsValue({ expenseDate: dayjs() });
+    }, 0);
+  }, [form]);
+
   // Check for ?action=add query param
   useEffect(() => {
     if (searchParams.get("action") === "add" && categories.length > 0) {
@@ -60,7 +70,7 @@ const Expenses = () => {
       // Remove query param so it doesn't reopen on refresh
       setSearchParams({});
     }
-  }, [searchParams, categories]);
+  }, [searchParams, categories, handleAddClick, setSearchParams]);
 
   const fetchExpensesAndCategories = async () => {
     try {
@@ -79,23 +89,18 @@ const Expenses = () => {
     }
   };
 
-  const handleAddClick = () => {
-    setEditingExpense(null);
-    form.resetFields();
-    form.setFieldsValue({ expenseDate: dayjs() });
-    setDrawerVisible(true);
-  };
-
-  const handleEditClick = (expense) => {
+  const handleEditClick = useCallback((expense) => {
     setEditingExpense(expense);
-    form.setFieldsValue({
-      amount: expense.amount,
-      category: expense.category,
-      description: expense.description,
-      expenseDate: dayjs(expense.expenseDate),
-    });
     setDrawerVisible(true);
-  };
+    setTimeout(() => {
+      form.setFieldsValue({
+        amount: expense.amount,
+        category: expense.category,
+        description: expense.description,
+        expenseDate: dayjs(expense.expenseDate),
+      });
+    }, 0);
+  }, [form]);
 
   const handleDeleteConfirm = async (id) => {
     try {

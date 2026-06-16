@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, Input, Button, Avatar, Space, Typography, Tag } from "antd";
 import {
   SendOutlined,
@@ -34,7 +34,6 @@ const parseMarkdown = (text) => {
 };
 
 const AIAssistant = () => {
-  const [expenses, setExpenses] = useState([]);
   const [inputText, setInputText] = useState("");
   const defaultMessage = [
     {
@@ -110,8 +109,7 @@ const AIAssistant = () => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await expenseService.getExpenses();
-      setExpenses(res.data || []);
+      await expenseService.getExpenses();
     } catch (err) {
       console.error("AI Assistant data fetch error:", err);
     }

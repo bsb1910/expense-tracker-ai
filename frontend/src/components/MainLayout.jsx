@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import { Layout, Menu, Button, Drawer, Typography, Space, Badge } from "antd";
 import {
   MenuFoldOutlined,

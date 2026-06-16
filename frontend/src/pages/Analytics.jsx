@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Select, Space, Statistic, Typography, Skeleton, Empty } from "antd";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
+import { Row, Col, Card, Select, Space, Typography, Skeleton, Empty } from "antd";
 import {
   ResponsiveContainer,
   PieChart,

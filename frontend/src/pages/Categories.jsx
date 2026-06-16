@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -21,7 +21,7 @@ import { categoryService, expenseService } from "../services/api";
 import { formatCurrency, getCategoryStyles } from "../utils/helpers";
 import { useTheme } from "../utils/ThemeContext";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Categories = () => {
   const { isDarkMode } = useTheme();

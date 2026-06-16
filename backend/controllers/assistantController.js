@@ -22,9 +22,12 @@ const chatWithAssistant = async (req, res) => {
   "expenses",
   "spending",
   "spent",
+  "total",
+  "amount",
   "transaction",
   "transactions",
-  "report",
+  "money",
+  "cost",
   "budget",
   "finance",
   "financial",
@@ -41,13 +44,11 @@ const chatWithAssistant = async (req, res) => {
   "investment",
   "healthcare",
   "entertainment",
-  "monthly",
-  "daily",
-  "weekly",
   "highest",
   "lowest",
   "average",
   "summary",
+  "report",
   "latest",
   "month",
   "year",
@@ -56,20 +57,19 @@ const chatWithAssistant = async (req, res) => {
   "recommendation",
   "recommendations",
   "insight",
-  "insights"    
+  "insights",
+  "top",
+  "most",
+  "least"
 ];
 
 const isFinanceQuery = financeKeywords.some((keyword) =>
   userMessage.includes(keyword)
 );
+console.log("Question:", userMessage);
+console.log("Finance Query:", isFinanceQuery);
 
-if (!isFinanceQuery) {
-  return res.status(200).json({
-    success: true,
-    reply:
-      "I can only answer questions based on your expense records available in SmartExpense.",
-  });
-}
+
 
     // Fetch all expenses from MongoDB
     const expenses = await Expense.find().sort({ expenseDate: 1 });
@@ -181,82 +181,43 @@ Rules for Response Formatting:
 
 24. Do not answer general knowledge, sports, movies, coding, science, politics, history, weather, or any topic outside the provided expense data.
 
-25. When rejecting a question, provide no additional explanation, analysis, recommendations, or summaries.
-Example:
+25. Never invent information not present in the expense records.
+26. Use only exact category names from the database.
+27. Do not assume reasons for purchases.
+28. When rejecting a question, provide no additional explanation, analysis, recommendations, or summaries.
 
-Question:
-Which month has the highest spending?
-
-Answer:
-
-# Monthly Spending Analysis
-
-## Highest Spending Month
-
-• Month: June
-• Total Spending: ₹3999
-
----
-
-## Expenses
-
-1. Lunch — ₹250
-2. Gym Membership — ₹1000
-3. Headphones — ₹1050
-
----
-
-## Insight
-
-✓ Most spending occurred during June.
-
-Question:
-Show all expenses from June.
-
-Answer:
-
-# June Expense Report
-
-## Transactions
-
-1. Lunch — ₹250
-2. Bus Ticket — ₹99
-3. Gym Membership — ₹1000
-
----
-
-## Summary
-
-• Total Transactions: 3
-• Total Spending: ₹1349
 `;
 
     console.log("Financial Context:");
     console.log(financialContext);
-
     // Send to OpenRouter
     const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
+  "https://openrouter.ai/api/v1/chat/completions",
+  {
+    model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    messages: [
       {
-        model: "z-ai/glm-4.5-air:free",
-        messages: [
-          {
-            role: "system",
-            content: financialContext,
-          },
-          {
-            role: "user",
-            content: message,
-          },
-        ],
+        role: "system",
+        content: financialContext,
       },
       {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+        role: "user",
+        content: message,
+      },
+    ],
+    temperature: 0.3,
+    max_tokens: 1000,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "http://localhost:3000",
+      "X-Title": "SmartExpense AI Assistant",
+    },
+    timeout: 60000,
+  }
+);
 
     const reply = response.data.choices[0].message.content;
 
