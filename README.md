@@ -418,6 +418,8 @@ OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
 
 B.Tech Computer Science Engineering
 
-AI Engineering Internship Project
+GitHub: https://github.com/bsb1910
+
+Project: AI-Powered Expense Tracker with Smart Financial Assistant
 
 June 2026
