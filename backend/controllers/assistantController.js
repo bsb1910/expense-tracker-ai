@@ -191,10 +191,17 @@ Rules for Response Formatting:
     console.log("Financial Context:");
     console.log(financialContext);
     // Send to OpenRouter
+
+    console.log(
+  "Using model:",
+  process.env.OPENROUTER_MODEL || "deepseek/deepseek-chat"
+);
     const response = await axios.post(
   "https://openrouter.ai/api/v1/chat/completions",
   {
-    model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    model:
+  process.env.OPENROUTER_MODEL ||
+  "deepseek/deepseek-chat",
     messages: [
       {
         role: "system",
